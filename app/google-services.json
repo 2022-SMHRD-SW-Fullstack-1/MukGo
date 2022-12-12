@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "888676228158",
+    "project_id": "mukgo-3f3b0",
+    "storage_bucket": "mukgo-3f3b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888676228158:android:4e1a1f46aef87b6393c56f",
+        "android_client_info": {
+          "package_name": "com.example.mukgoapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888676228158-2pck1ls560b2puq1jl00f6b5j0jpakdj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjCjlHYud4cTOkMdMgkJLHuMXidosI4UE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888676228158-2pck1ls560b2puq1jl00f6b5j0jpakdj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
