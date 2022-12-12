@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".write.WriteActivity">
+
+    <EditText
+        android:id="@+id/etWrtieTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="제목"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etWriteContent"
+        android:layout_width="367dp"
+        android:layout_height="237dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="내용"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/etWrtieTitle"
+        app:layout_constraintStart_toStartOf="@+id/etWrtieTitle"
+        app:layout_constraintTop_toBottomOf="@+id/etWrtieTitle" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="142dp"
+        android:layout_height="123dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivWriteImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivWriteImage"
+        app:layout_constraintTop_toTopOf="@+id/ivWriteImage"
+        app:srcCompat="@android:drawable/ic_menu_mapmode" />
+
+    <ImageView
+        android:id="@+id/ivWriteImage"
+        android:layout_width="124dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="68dp"
+        app:layout_constraintStart_toStartOf="@+id/etWriteContent"
+        app:layout_constraintTop_toBottomOf="@+id/etWriteContent"
+        app:srcCompat="@drawable/item_plus" />
+
+    <Button
+        android:id="@+id/btnWriteSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="글 올리기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
