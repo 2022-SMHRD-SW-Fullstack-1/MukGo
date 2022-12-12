@@ -1,5 +1,6 @@
 package com.example.mukgoapplication.chat
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,6 +24,12 @@ class ChatRoomFragment : Fragment() {
         val chatList = ArrayList<ChatRoomVO>()
 
         val adapter = ChatRoomAdapter(requireContext(), chatList)
+        adapter.setOnItemClickListener(object : ChatRoomAdapter.onItemClickListener{
+            override fun onItemClick(view: View, position: Int) {
+                val intent = Intent(requireContext(),ChatActivity::class.java)
+                startActivity(intent)
+            }
+        })
         rvChatRoom.adapter = adapter
         rvChatRoom.layoutManager = LinearLayoutManager(requireContext())
 
