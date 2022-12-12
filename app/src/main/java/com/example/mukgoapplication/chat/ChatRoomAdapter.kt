@@ -14,6 +14,17 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 class ChatRoomAdapter(val context: Context, val chatroomList: ArrayList<ChatRoomVO>): RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>() {
+
+    interface onItemClickListener{
+        fun onItemClick(view: View, position: Int)
+    }
+
+    lateinit var monItemClickListener: onItemClickListener
+
+    fun setOnItemClickListener(onItemClickListener: onItemClickListener) {
+        monItemClickListener = onItemClickListener
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgCRT: ImageView
         val tvCRTNick: TextView
