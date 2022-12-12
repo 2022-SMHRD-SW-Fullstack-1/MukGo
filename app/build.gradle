@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.0.5'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.2'
+
     // firebase auth
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.8'
 

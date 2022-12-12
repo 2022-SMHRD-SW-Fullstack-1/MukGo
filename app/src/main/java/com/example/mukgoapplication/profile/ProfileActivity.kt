@@ -1,12 +1,12 @@
-package com.example.mukgoapplication.home
+package com.example.mukgoapplication.profile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.mukgoapplication.R
 
-class MainActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_profile)
     }
 }

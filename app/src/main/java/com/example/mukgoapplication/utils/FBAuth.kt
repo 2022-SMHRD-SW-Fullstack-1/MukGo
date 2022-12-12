@@ -23,5 +23,6 @@ class FBAuth {
             val time = SimpleDateFormat("yyyy.MM.dd HH:mm:sss", Locale.KOREAN).format(currentTime)
             return time
         }
+
     }
 }
