@@ -40,7 +40,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="비밀번호 확인"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/etJoinPw"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/etJoinPw"

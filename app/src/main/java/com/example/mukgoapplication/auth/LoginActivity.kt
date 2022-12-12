@@ -16,7 +16,8 @@ import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var etJoin : TextView
+    lateinit var etJoin: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
         val etLoginId = findViewById<EditText>(R.id.etLoginId)
         val etLoginPw = findViewById<EditText>(R.id.etLoginPw)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
-         etJoin = findViewById(R.id.etJoin)
+        etJoin = findViewById(R.id.etJoin)
         etLoginId.setText(loginId)
         etLoginPw.setText(loginPw)
 
@@ -44,6 +45,8 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, JoinActivity::class.java)
             startActivity(intent)
         }
+
+
 
         // login 버튼을 눌렀을 때
         btnLogin.setOnClickListener {

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".auth.MemberFindLoginIdActivity">
+
 
     <EditText
         android:id="@+id/etLoginId"
@@ -56,6 +57,21 @@
         android:gravity="center|center_horizontal|center_vertical"
         android:inputType="textPersonName"
         android:text="회원가입"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/etLoginPw"
+        app:layout_constraintTop_toBottomOf="@+id/etLoginPw" />
+
+    <TextView
+        android:id="@+id/etFindLoginId"
+        android:layout_width="73dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="72dp"
+        android:background="@null"
+        android:ems="10"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:inputType="textPersonName"
+        android:text="아이디 찾기"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="@+id/etLoginPw"
         app:layout_constraintTop_toBottomOf="@+id/etLoginPw" />
