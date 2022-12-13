@@ -160,4 +160,16 @@
         app:layout_constraintStart_toEndOf="@+id/tvHomeLikeNum"
         app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
+    <Button
+        android:id="@+id/btnHomeProfileMove"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:backgroundTint="#FFFFFF"
+        android:insetBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/imgHomeContent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

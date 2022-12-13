@@ -76,8 +76,6 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
                     }
                 }
-
-            Toast.makeText(this@LoginActivity, "$email,$pw", Toast.LENGTH_SHORT).show()
         }
     }
 }

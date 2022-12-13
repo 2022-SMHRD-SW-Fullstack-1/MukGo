@@ -1,9 +1,8 @@
-package com.example.mukgoapplication.write
+package com.example.mukgoapplication.auth
 
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -11,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.mukgoapplication.MainActivity
 import com.example.mukgoapplication.R
 import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
@@ -18,47 +18,48 @@ import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.ou
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
-class WriteActivity : AppCompatActivity() {
+class MemberActivity : AppCompatActivity() {
 
-    lateinit var ivWriteImage : ImageView
+    lateinit var imgMemberProfile: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_write)
+        setContentView(R.layout.activity_member)
 
-        val etWriteContent = findViewById<EditText>(R.id.etWriteContent)
-        ivWriteImage = findViewById(R.id.ivWriteImage)
-        val btnWriteSubmit = findViewById<Button>(R.id.btnWriteSubmit)
+        val etMemberNick = findViewById<EditText>(R.id.etMemberNick)
+        val etMemberName = findViewById<EditText>(R.id.etMemberName)
+        val etMemberIntro = findViewById<EditText>(R.id.etMemberIntro)
+        imgMemberProfile = findViewById(R.id.imgMemberProfile)
+        val btnMemberJoin = findViewById<Button>(R.id.btnMemberJoin)
 
-        btnWriteSubmit.setOnClickListener {
-            val content = etWriteContent.text.toString()
+        btnMemberJoin.setOnClickListener {
 
+            val nick = etMemberNick.text.toString()
+            val name = etMemberName.text.toString()
+            val intro = etMemberIntro.text.toString()
             val uid = FBAuth.getUid()
-            val time = FBAuth.getTime()
 
+            var key = FBDatabase.getMemberRef().child(uid).key.toString()
+            FBDatabase.getMemberRef().child(key).setValue(MemberVO(nick, name, intro, uid))
 
-            var key = FBDatabase.getBoardRef().child(uid).push().key.toString()
-            FBDatabase.getBoardRef().child(uid).child(key).setValue(BoardVO(content, uid, time))
             imgUpload(key)
-
-            var key2 = FBDatabase.getAllBoardRef().child(uid).push().key.toString()
-            FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time))
-
             finish()
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
 
-
-        ivWriteImage.setOnClickListener {
+        imgMemberProfile.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             launcher.launch(intent)
         }
     }
 
-        val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
-                ivWriteImage.setImageURI(it.data?.data)
-            }
+    val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == RESULT_OK) {
+            imgMemberProfile.setImageURI(it.data?.data)
         }
+    }
 
     fun imgUpload(key: String) {
         val storage = Firebase.storage
@@ -66,9 +67,9 @@ class WriteActivity : AppCompatActivity() {
         val mountainsRef = storageRef.child("$key.png")
 
 //          ImageView의 데이터 가져오기 api
-        ivWriteImage.isDrawingCacheEnabled = true
-        ivWriteImage.buildDrawingCache()
-        val bitmap = (ivWriteImage.drawable as BitmapDrawable).bitmap
+        imgMemberProfile.isDrawingCacheEnabled = true
+        imgMemberProfile.buildDrawingCache()
+        val bitmap = (imgMemberProfile.drawable as BitmapDrawable).bitmap
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos)
         val data = baos.toByteArray()

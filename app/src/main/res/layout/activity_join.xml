@@ -46,27 +46,13 @@
         app:layout_constraintStart_toStartOf="@+id/etJoinPw"
         app:layout_constraintTop_toBottomOf="@+id/etJoinPw" />
 
-    <EditText
-        android:id="@+id/etJoinNick"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="닉네임"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/etJoinCheck"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/etJoinCheck"
-        app:layout_constraintTop_toBottomOf="@+id/etJoinCheck" />
-
     <Button
         android:id="@+id/btnJoinJoin"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="16dp"
-        android:text="회원가입 하기"
-        app:layout_constraintEnd_toEndOf="@+id/etJoinNick"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/etJoinNick"
-        app:layout_constraintTop_toBottomOf="@+id/etJoinNick" />
+        android:layout_marginTop="196dp"
+        android:text="다음"
+        app:layout_constraintEnd_toEndOf="@+id/etJoinCheck"
+        app:layout_constraintStart_toStartOf="@+id/etJoinCheck"
+        app:layout_constraintTop_toBottomOf="@+id/etJoinCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
