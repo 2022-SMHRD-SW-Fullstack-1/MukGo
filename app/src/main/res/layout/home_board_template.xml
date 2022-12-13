@@ -31,8 +31,9 @@
 
     <ImageView
         android:id="@+id/imgHomeContent"
-        android:layout_width="419dp"
-        android:layout_height="0dp"
+        android:layout_width="420dp"
+        android:layout_height="422dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.543"
@@ -46,14 +47,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
+        app:layout_constraintGuide_begin="54dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.72" />
+        app:layout_constraintGuide_percent="0.7192716" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline7"
