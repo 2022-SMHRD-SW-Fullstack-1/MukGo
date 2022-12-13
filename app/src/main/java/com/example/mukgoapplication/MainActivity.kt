@@ -5,22 +5,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
+import com.example.mukgoapplication.chat.ChatRoomFragment
+import com.example.mukgoapplication.databinding.ActivityMainBinding
 import com.example.mukgoapplication.home.Fragment1_home
 import com.example.mukgoapplication.profile.ProfileActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val flMain = findViewById<FrameLayout>(R.id.flMain)
-        val ivProfile = findViewById<ImageView>(R.id.ivProfile)
-        val ivAlarm = findViewById<ImageView>(R.id.ivAlarm)
-        val ivSetting = findViewById<ImageView>(R.id.ivSetting)
-        val bnvMenu = findViewById<BottomNavigationView>(R.id.bnvMenu)
-
-        ivProfile.setOnClickListener {
+        binding.ivProfile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
         }
 
@@ -29,12 +29,27 @@ class MainActivity : AppCompatActivity() {
             Fragment1_home()
         ).commit()
 
-        bnvMenu.setOnItemSelectedListener {
+        binding.bnvMenu.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.tap1 -> {
                     supportFragmentManager.beginTransaction().replace(
                         R.id.flMain,
                         Fragment1_home()
+                    ).commit()
+                }
+                R.id.tap2 -> {
+
+                }
+                R.id.tap3 -> {
+
+                }
+                R.id.tap4 -> {
+
+                }
+                R.id.tap5 -> {
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.flMain,
+                        ChatRoomFragment()
                     ).commit()
                 }
             }
