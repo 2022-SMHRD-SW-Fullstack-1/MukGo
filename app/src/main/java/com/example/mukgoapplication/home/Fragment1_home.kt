@@ -56,6 +56,7 @@ class Fragment1_home : Fragment() {
     fun getHomeBoardData(){
         val postListener = object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                homeBoardList.clear()
                 for(model in snapshot.children){
                     val item = model.getValue(BoardVO::class.java)
                     if(item !=null){
