@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.08" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -21,10 +21,12 @@
         app:layout_constraintGuide_percent="0.9" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bnv"
+        android:id="@+id/bnvMenu"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:itemIconTint="@drawable/menu_color"
+        app:itemPaddingBottom="14dp"
+        app:itemPaddingTop="10dp"
         app:itemTextColor="@drawable/menu_color"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,5 +34,58 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:menu="@menu/menu_list" />
+
+    <FrameLayout
+        android:id="@+id/flMain"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2">
+
+    </FrameLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="30dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/img_user"
+        app:civ_border_color="#222222"
+        app:civ_border_width="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivAlarm"
+        app:layout_constraintEnd_toStartOf="@+id/ivAlarm"
+        app:layout_constraintTop_toTopOf="@+id/ivAlarm" />
+
+    <ImageView
+        android:id="@+id/ivAlarm"
+        android:layout_width="30dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivSetting"
+        app:layout_constraintEnd_toStartOf="@+id/ivSetting"
+        app:layout_constraintTop_toTopOf="@+id/ivSetting"
+        app:srcCompat="@drawable/img_alarm" />
+
+    <ImageView
+        android:id="@+id/ivSetting"
+        android:layout_width="30dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_setting" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/imgae_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

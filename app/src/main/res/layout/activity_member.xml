@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".auth.MemberActivity">
+
+    <EditText
+        android:id="@+id/etMemberNick"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="닉네임"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etMemberName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="이름"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/etMemberNick"
+        app:layout_constraintStart_toStartOf="@+id/etMemberNick"
+        app:layout_constraintTop_toBottomOf="@+id/etMemberNick" />
+
+    <EditText
+        android:id="@+id/etMemberIntro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="소개"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/etMemberName"
+        app:layout_constraintStart_toStartOf="@+id/etMemberName"
+        app:layout_constraintTop_toBottomOf="@+id/etMemberName" />
+
+    <ImageView
+        android:id="@+id/imgMemberProfile"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="@+id/etMemberIntro"
+        app:layout_constraintStart_toStartOf="@+id/etMemberIntro"
+        app:layout_constraintTop_toBottomOf="@+id/etMemberIntro"
+        app:srcCompat="@drawable/image_logo" />
+
+    <Button
+        android:id="@+id/btnMemberJoin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="회원가입"
+        app:layout_constraintEnd_toEndOf="@+id/imgMemberProfile"
+        app:layout_constraintStart_toStartOf="@+id/imgMemberProfile"
+        app:layout_constraintTop_toBottomOf="@+id/imgMemberProfile" />
+</androidx.constraintlayout.widget.ConstraintLayout>

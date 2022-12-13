@@ -9,15 +9,21 @@ class FBDatabase {
     companion object {
         val database = Firebase.database
 
-//        //FBdatabase.getBoardRef()를 통해 호출
-//        fun getBoardRef(): DatabaseReference {
-//            return database.getReference("board")
-//
-//        }
-//
+//        FBdatabase.getBoardRef()를 통해 호출
+        fun getBoardRef(): DatabaseReference {
+            return database.getReference("board")
+        }
+
+        fun getAllBoardRef() : DatabaseReference{
+            return database.getReference("allboard")
+        }
+
+        fun getMemberRef() : DatabaseReference {
+            return database.getReference("member")
+        }
+
 //        fun getContentRef(): DatabaseReference {
 //            return database.getReference("content")
-//
 //        }
 //
 //        fun getBookmarkRef(): DatabaseReference {
