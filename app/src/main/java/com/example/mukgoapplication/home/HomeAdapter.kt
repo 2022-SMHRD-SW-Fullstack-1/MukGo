@@ -2,6 +2,7 @@ package com.example.mukgoapplication.home
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +16,12 @@ import com.example.mukgoapplication.profile.ProfileActivity
 import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
 import com.example.mukgoapplication.write.BoardVO
+import com.example.mukgoapplication.write.CommentActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
-class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>) :
+class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, val keyData: ArrayList<String>) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
 
@@ -39,12 +41,10 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>) :
         val uid = FBAuth.getUid()
         val route = FBDatabase.getBoardRef().child(uid)
 
-
-
         init {
             imgHomeProfile = itemView.findViewById(R.id.imgHomeProfile)
             tvHomeNick = itemView.findViewById(R.id.tvHomeContent)
-            imgHomeContent = itemView.findViewById(R.id.imgHomeLike)
+            imgHomeContent = itemView.findViewById(R.id.imgHomeContent)
             imgHomeLike = itemView.findViewById(R.id.imgHomeLike)
             imgHomeComment = itemView.findViewById(R.id.imgHomeComment)
             imgHomeBookmark = itemView.findViewById(R.id.imgHomeBookmark)
@@ -58,7 +58,6 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>) :
                 intent.putExtra("uid", uid)
                 context.startActivity(intent)
             }
-
 
         }
 
@@ -77,8 +76,17 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>) :
         holder.tvHomeContent.text = boardHomeList[position].content
         holder.tvHomeTime.text = boardHomeList[position].time
         Glide.with(context).load(boardHomeList[position].image).into(holder.imgHomeContent)
-
+        getHomeBoardImage(keyData[position], holder.imgHomeContent)
         getHomeBoardImage(boardHomeList[position].uid, holder.imgHomeProfile)
+        holder.imgHomeComment.setOnClickListener {
+            val intent = Intent(context, CommentActivity::class.java)
+            intent.putExtra("boardKey", keyData[position])
+            intent.putExtra("profileUid", boardHomeList[position].uid)
+            intent.putExtra("nick", boardHomeList[position].nick)
+            intent.putExtra("content", boardHomeList[position].content)
+
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -90,10 +98,13 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>) :
 
         storageReference.downloadUrl.addOnCompleteListener { task->
             if(task.isSuccessful){
+                Log.d("key", "Success")
                 Glide.with(context)
                     .load(task.result)
                     .into(view)
             }
+            else
+                Log.d("key", "Fail")
         }
     }
 
