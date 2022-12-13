@@ -2,6 +2,7 @@ package com.example.mukgoapplication.map
 
 import android.Manifest.permission
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources.NotFoundException
@@ -14,6 +15,7 @@ import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.mukgoapplication.BuildConfig
@@ -40,11 +42,9 @@ import java.util.*
  */
 class AutocompleteAddressActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var address1Field: AutocompleteEditText
-    private var address2Field: EditText? = null
-    private var cityField: EditText? = null
-    private var stateField: EditText? = null
-    private var postalField: EditText? = null
-    private var countryField: EditText? = null
+//    private var stateField: EditText? = null
+//    private var postalField: EditText? = null
+//    private var countryField: EditText? = null
     private var coordinates: LatLng? = null
     private var checkProximity = false
     private var mapFragment: SupportMapFragment? = null
@@ -53,6 +53,14 @@ class AutocompleteAddressActivity : AppCompatActivity(), OnMapReadyCallback {
     private var placesClient: PlacesClient? = null
     private var mapPanel: View? = null
     private var deviceLocation: LatLng? = null
+    private var inputAddress:String="목표위치"
+
+    private var likelyPlaceNames: Array<String?> = arrayOfNulls(0)
+    private var likelyPlaceAddresses: Array<String?> = arrayOfNulls(0)
+    private var likelyPlaceAttributions: Array<List<*>?> = arrayOfNulls(0)
+    private var likelyPlaceLatLngs: Array<LatLng?> = arrayOfNulls(0)
+
+
     var startAutocompleteIntentListener = View.OnClickListener { view: View ->
         view.setOnClickListener(null)
         startAutocompleteIntent()
@@ -101,17 +109,15 @@ class AutocompleteAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
         placesClient = Places.createClient(this)
         address1Field = findViewById(R.id.autocomplete_address1)
-        address2Field = findViewById(R.id.autocomplete_address2)
-        cityField = findViewById(R.id.autocomplete_city)
-        stateField = findViewById(R.id.autocomplete_state)
-        postalField = findViewById(R.id.autocomplete_postal)
-        countryField = findViewById(R.id.autocomplete_country)
+//        stateField = findViewById(R.id.autocomplete_state)
+//        postalField = findViewById(R.id.autocomplete_postal)
+//        countryField = findViewById(R.id.autocomplete_country)
 
         // Attach an Autocomplete intent to the Address 1 EditText field
         address1Field.setOnClickListener(startAutocompleteIntentListener)
 
         // Update checkProximity when user checks the checkbox
-        val checkProximityBox = findViewById<CheckBox>(R.id.checkbox_proximity)
+        val checkProximityBox = findViewById<CheckBox>(R.id.cbAddress)
         checkProximityBox.setOnCheckedChangeListener { view: CompoundButton?, isChecked: Boolean ->
             // Set the boolean to match user preference for when the Submit button is clicked
             checkProximity = isChecked
@@ -137,7 +143,9 @@ class AutocompleteAddressActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Build the autocomplete intent with field, country, and type filters applied
         val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+            .setCountry("KOR")
             .build(this)
+
         startAutocomplete.launch(intent)
     }
 
@@ -156,7 +164,7 @@ class AutocompleteAddressActivity : AppCompatActivity(), OnMapReadyCallback {
             Log.e(TAG, "Can't find style. Error: ", e)
         }
         map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates!!, 15f))
-        marker = map!!.addMarker(MarkerOptions().position(coordinates!!))
+        marker = map!!.addMarker(MarkerOptions().position(coordinates!!).title(inputAddress))
     }
 
     private fun fillInAddress(place: Place) {
@@ -184,21 +192,18 @@ class AutocompleteAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                     "postal_code_suffix" -> {
                         postcode.append("-").append(component.name)
                     }
-                    "locality" -> cityField!!.setText(component.name)
-                    "administrative_area_level_1" -> {
-                        stateField!!.setText(component.shortName)
-                    }
-                    "country" -> countryField!!.setText(component.name)
+//                    "administrative_area_lev                                                                                                                                                                                                                                                                                                                                                                             el_1" -> {
+//                        stateField!!.setText(component.shortName)
+//                    }
+//                    "country" -> countryField!!.setText(component.name)
                 }
             }
         }
         address1Field.setText(address1.toString())
-        postalField!!.setText(postcode.toString())
-
+//        postalField!!.setText(postcode.toString())
         // After filling the form with address components from the Autocomplete
         // prediction, set cursor focus on the second address line to encourage
         // entry of sub-premise information such as apartment, unit, or floor number.
-        address2Field!!.requestFocus()
 
         // Add a map for visual confirmation of the address
         showMap(place)
@@ -259,11 +264,9 @@ class AutocompleteAddressActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun clearForm() {
         address1Field.setText("")
-        address2Field!!.text.clear()
-        cityField!!.text.clear()
-        stateField!!.text.clear()
-        postalField!!.text.clear()
-        countryField!!.text.clear()
+//        stateField!!.text.clear()
+//        postalField!!.text.clear()
+//        countryField!!.text.clear()
         if (mapPanel != null) {
             mapPanel!!.visibility = View.GONE
         }
@@ -352,9 +355,50 @@ class AutocompleteAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
         }
 
+
     companion object {
         private const val TAG = "ADDRESS_AUTOCOMPLETE"
+        private const val DEFAULT_ZOOM = 15
         private const val MAP_FRAGMENT_TAG = "MAP"
         private const val acceptedProximity = 150.0
     }
+
+    /**
+     * 사용자가 예상 장소 목록에서 장소를 선택할 수 있는 양식을 표시합니다. .
+     */
+    private fun openPlacesDialog() {
+        // 사용자에게 현재 위치를 선택하도록 요청합니다.
+        val listener = DialogInterface.OnClickListener { dialog, which -> // "which" 에는 선택한 항목의 위치가 포함됩니다.
+            val markerLatLng = likelyPlaceLatLngs[which]
+            var markerSnippet = likelyPlaceAddresses[which]
+            if (likelyPlaceAttributions[which] != null) {
+                markerSnippet = """
+                    $markerSnippet
+                    ${likelyPlaceAttributions[which]}
+                    """.trimIndent()
+            }
+
+            if (markerLatLng == null) {
+                return@OnClickListener
+            }
+
+            // 선택한 플레이스에 대한 마커를 추가하고,
+            // 해당 플레이스에 대한 정보를 표시하는 정보 창을 표시합니다.
+            map?.addMarker(MarkerOptions()
+                .title(likelyPlaceNames[which])
+                .position(markerLatLng)
+                .snippet(markerSnippet))
+
+            // 지도의 카메라를 마커 위치에 배치합니다.
+            map?.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng,
+                DEFAULT_ZOOM.toFloat()))
+        }
+
+        // Display the dialog.
+        AlertDialog.Builder(this)
+            .setTitle(R.string.pick_place)
+            .setItems(likelyPlaceNames, listener)
+            .show()
+    }
+
 }
