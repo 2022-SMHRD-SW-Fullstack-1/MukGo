@@ -6,7 +6,6 @@ import com.example.mukgoapplication.databinding.ActivityChatBinding
 import com.example.mukgoapplication.utils.FBAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.time.LocalDateTime
 
 class ChatActivity : AppCompatActivity() {
 

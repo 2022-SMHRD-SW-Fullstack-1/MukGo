@@ -9,6 +9,7 @@ import com.example.mukgoapplication.chat.ChatRoomFragment
 import com.example.mukgoapplication.databinding.ActivityMainBinding
 import com.example.mukgoapplication.home.Fragment1_home
 import com.example.mukgoapplication.profile.ProfileActivity
+import com.example.mukgoapplication.setting.SettingActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.ivProfile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
+        }
+
+        binding.ivSetting.setOnClickListener {
+            val intent = Intent(this, SettingActivity::class.java)
+            startActivity(intent)
         }
 
         supportFragmentManager.beginTransaction().replace(
