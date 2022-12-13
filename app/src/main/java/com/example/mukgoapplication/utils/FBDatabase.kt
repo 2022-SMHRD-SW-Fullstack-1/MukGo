@@ -22,6 +22,7 @@ class FBDatabase {
             return database.getReference("member")
         }
 
+
 //        fun getContentRef(): DatabaseReference {
 //            return database.getReference("content")
 //        }

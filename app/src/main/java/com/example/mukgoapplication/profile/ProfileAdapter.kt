@@ -16,7 +16,7 @@ import com.google.firebase.storage.ktx.storage
 class ProfileAdapter(val context: Context, val profileBoardList: ArrayList<BoardVO>) :
     RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
 
-    lateinit var imgProfileBoard : ImageView
+    lateinit var imgProfileBoard: ImageView
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -38,23 +38,25 @@ class ProfileAdapter(val context: Context, val profileBoardList: ArrayList<Board
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Glide.with(context).load(profileBoardList[position].image).into(holder.imgProfileBoard)
+
+        getImageData(profileBoardList[position].uid, holder.imgProfileBoard)
     }
 
     override fun getItemCount(): Int {
         return profileBoardList.size
     }
 
-    fun getImageData(key:String){
+    fun getImageData(key: String, view: ImageView) {
         val storageReference = Firebase.storage.reference.child("$key.png")
 
-        storageReference.downloadUrl.addOnCompleteListener {
-            task->
-            if(task.isSuccessful){
+        storageReference.downloadUrl.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
                 Glide.with(context)
                     .load(task.result)
                     .into(imgProfileBoard)
             }
         }
     }
+
 
 }
