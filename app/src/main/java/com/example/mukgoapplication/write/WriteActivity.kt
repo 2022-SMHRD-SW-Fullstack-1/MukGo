@@ -25,20 +25,18 @@ class WriteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write)
 
-        val etWriteTitle = findViewById<EditText>(R.id.etWrtieTitle)
         val etWriteContent = findViewById<EditText>(R.id.etWriteContent)
         ivWriteImage = findViewById(R.id.ivWriteImage)
         val btnWriteSubmit = findViewById<Button>(R.id.btnWriteSubmit)
 
         btnWriteSubmit.setOnClickListener {
-            val title = etWriteTitle.text.toString()
             val content = etWriteContent.text.toString()
 
             val uid = FBAuth.getUid()
             val time = FBAuth.getTime()
 
             var key = FBDatabase.getBoardRef().push().key.toString()
-            FBDatabase.getBoardRef().child(key).setValue(BoardVO(title, content, uid, time))
+            FBDatabase.getBoardRef().child(key).setValue(BoardVO(content, uid, time))
             imgUpload(key)
             finish()
         }
