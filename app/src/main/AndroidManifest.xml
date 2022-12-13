@@ -13,13 +13,20 @@
         android:theme="@style/Theme.MukGoApplication"
         tools:targetApi="31">
         <activity
+            android:name=".CommentActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".auth.MemberActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-<activity
+        <activity
             android:name=".setting.EditActivity"
             android:exported="false">
             <meta-data

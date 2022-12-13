@@ -15,6 +15,7 @@ import com.example.mukgoapplication.profile.ProfileActivity
 import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
 import com.example.mukgoapplication.write.BoardVO
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
@@ -77,23 +78,23 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>) :
         holder.tvHomeTime.text = boardHomeList[position].time
         Glide.with(context).load(boardHomeList[position].image).into(holder.imgHomeContent)
 
-//        getHomeBoardImage()
+        getHomeBoardImage(boardHomeList[position].uid, holder.imgHomeProfile)
     }
 
     override fun getItemCount(): Int {
         return boardHomeList.size
     }
 
-//    fun getHomeBoardImage(){
-//        val storageReference = Firebase.storage.reference.child("$key.png")
-//
-//        storageReference.downloadUrl.addOnCompleteListener { task->
-//            if(task.isSuccessful){
-//                Glide.with(context)
-//                    .load(task.result)
-//                    .into(imgHomeContent)
-//            }
-//        }
-//    }
+    fun getHomeBoardImage(key : String, view: ImageView){
+        val storageReference = Firebase.storage.reference.child("$key.png")
+
+        storageReference.downloadUrl.addOnCompleteListener { task->
+            if(task.isSuccessful){
+                Glide.with(context)
+                    .load(task.result)
+                    .into(view)
+            }
+        }
+    }
 
 }
