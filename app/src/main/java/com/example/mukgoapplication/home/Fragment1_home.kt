@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.mukgoapplication.R
 import com.example.mukgoapplication.utils.FBDatabase
 import com.example.mukgoapplication.write.BoardVO
@@ -17,6 +18,8 @@ import com.example.mukgoapplication.write.WriteActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class Fragment1_home : Fragment() {
 
@@ -70,7 +73,9 @@ class Fragment1_home : Fragment() {
             }
 
         }
-        FBDatabase.getBoardRef().addValueEventListener(postListener)
+        FBDatabase.getAllBoardRef().addValueEventListener(postListener)
     }
+
+
 
 }

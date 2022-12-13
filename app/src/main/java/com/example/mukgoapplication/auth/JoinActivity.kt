@@ -21,7 +21,6 @@ class JoinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join)
 
-        val etJoinNick = findViewById<EditText>(R.id.etJoinNick)
         val etJoinEmail = findViewById<EditText>(R.id.etJoinEmail)
         val etJoinPw = findViewById<EditText>(R.id.etJoinPw)
         val etJoinCheck = findViewById<EditText>(R.id.etJoinCheck)
@@ -37,7 +36,6 @@ class JoinActivity : AppCompatActivity() {
             val email = etJoinEmail.text.toString()
             val pw = etJoinPw.text.toString()
             val checkPw = etJoinCheck.text.toString() // 비밀번호 재입력 내용
-            val nick = etJoinNick.text.toString()
 
             // Toast.makeText(this@JoinActivity, "$email, $pw",
             // Toast.LENGTH_SHORT().show()
@@ -45,10 +43,7 @@ class JoinActivity : AppCompatActivity() {
             // 실제로 회원 가입 정보 전달 (Firebase로 전달)
 
             // EditText에 내용이 있는지
-            if (nick.isEmpty()) {
-                isJoin = false
-                Toast.makeText(this, "닉네임을 입력해주세요", Toast.LENGTH_SHORT).show()
-            }
+
             if (email.isEmpty()) {
                 isJoin = false
                 Toast.makeText(this, "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
@@ -85,7 +80,7 @@ class JoinActivity : AppCompatActivity() {
                             Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
                             val intent = Intent(
                                 this@JoinActivity,
-                                LoginActivity::class.java
+                                MemberActivity::class.java
                             )
                             startActivity(intent)
                             finish()
