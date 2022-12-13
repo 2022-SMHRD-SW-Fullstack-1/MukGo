@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".map.MapActivity">
+    tools:context=".map.MapsActivity">
 
     <fragment
         android:id="@+id/map"
@@ -15,5 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".MapActivity" />
+        tools:context=".MapsActivityCurrentPlace" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
