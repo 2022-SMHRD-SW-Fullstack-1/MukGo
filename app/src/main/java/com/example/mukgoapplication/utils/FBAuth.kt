@@ -14,6 +14,7 @@ class FBAuth {
             auth = FirebaseAuth.getInstance() // class 안에서 인스턴스 생성할 때 getInstance()붙여준다
             return auth.currentUser!!.uid
         }
+        
         /**현재시간을 가져온다*/
         fun getTime(): String{
             // Calendar 객체는 getInstance() 메소드로 객체를 생성한다

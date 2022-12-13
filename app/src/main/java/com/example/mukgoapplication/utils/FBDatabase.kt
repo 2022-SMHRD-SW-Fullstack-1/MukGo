@@ -14,9 +14,17 @@ class FBDatabase {
             return database.getReference("board")
         }
 
-        fun getContentRef(): DatabaseReference {
-            return database.getReference("content")
+        fun getAllBoardRef() : DatabaseReference{
+            return database.getReference("allboard")
         }
+
+        fun getMemberRef() : DatabaseReference {
+            return database.getReference("member")
+        }
+
+//        fun getContentRef(): DatabaseReference {
+//            return database.getReference("content")
+//        }
 //
 //        fun getBookmarkRef(): DatabaseReference {
 //            return database.getReference("bookmarkList")
