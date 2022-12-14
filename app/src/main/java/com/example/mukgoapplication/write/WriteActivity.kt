@@ -44,7 +44,6 @@ class WriteActivity : AppCompatActivity() {
     lateinit var ivWriteImage: ImageView
     lateinit var ivWriteCamera: ImageView
     lateinit var etWriteContent:EditText
-    lateinit var ivWriteImage : ImageView
 
     var nick = ""
 //    카메라
