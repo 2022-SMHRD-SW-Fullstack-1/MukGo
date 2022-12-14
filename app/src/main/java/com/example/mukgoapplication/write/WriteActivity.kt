@@ -12,22 +12,29 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.provider.MediaStore.Audio.Media
 import android.util.Log.d
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import com.bumptech.glide.Glide
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.VolleyLog.d
 import com.example.mukgoapplication.R
+import com.example.mukgoapplication.auth.MemberVO
 import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
 import com.google.android.datatransport.runtime.logging.Logging.d
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.util.logging.Logger
@@ -36,7 +43,8 @@ class WriteActivity : AppCompatActivity() {
 
     lateinit var ivWriteImage: ImageView
     lateinit var ivWriteCamera: ImageView
-
+    lateinit var etWriteContent:EditText
+    var nick = ""
 //    카메라
 
     val cameraPermission = arrayOf(Manifest.permission.CAMERA)
@@ -68,6 +76,13 @@ class WriteActivity : AppCompatActivity() {
         ivWriteCamera = findViewById(R.id.ivWriteCamera)
         val btnWriteSubmit = findViewById<Button>(R.id.btnWriteSubmit)
 
+        getUserNick(FBAuth.getUid())
+
+        var boardKey = intent.getStringExtra("boardKey").toString()
+        if(boardKey!=null){
+            getBoardData(boardKey, etWriteContent, ivWriteImage)
+        }
+
 //        글쓰기
 
         btnWriteSubmit.setOnClickListener {
@@ -77,12 +92,11 @@ class WriteActivity : AppCompatActivity() {
             val time = FBAuth.getTime()
 
 
-            var key = FBDatabase.getBoardRef().child(uid).push().key.toString()
-            FBDatabase.getBoardRef().child(uid).child(key).setValue(BoardVO(content, uid, time))
-
-
             var key2 = FBDatabase.getAllBoardRef().child(uid).push().key.toString()
-            FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time))
+            if (boardKey!=null){
+                key2=boardKey
+            }
+            FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time, nick))
             imgUpload(key2)
             cameraUpload(key2)
 
@@ -125,8 +139,42 @@ class WriteActivity : AppCompatActivity() {
 //                 taskSnapshot.metadata contains file metadata such as size, content-type, etc.
 
         }
+    }
 
+    fun getUserNick(uid: String){
+        FBDatabase.database.getReference("member").child(uid).get().addOnSuccessListener {
+            val item = it.getValue(MemberVO::class.java) as MemberVO
+            nick = item.nick
+        }.addOnFailureListener{
+            Log.e("firebase", "Error getting data", it)
+        }
 
+    }
+
+    /**board 에 있는 데이터 전부를 가져오는 작업을 할 것*/
+    fun getBoardData(uid: String, et: EditText, iv: ImageView){
+        FBDatabase.getAllBoardRef().child(uid).get().addOnSuccessListener {
+            val item = it.getValue(BoardVO::class.java)
+            if (item != null) {
+                et.setText(item.content)
+                getImageData(item.uid,iv)
+            }
+
+        }.addOnFailureListener{
+            Log.e("firebase", "Error getting data", it)
+        }
+    }
+
+    fun getImageData(key : String, view: ImageView){
+        val storageReference = Firebase.storage.reference.child("$key.png")
+
+        storageReference.downloadUrl.addOnCompleteListener { task->
+            if (task.isSuccessful){
+                Glide.with(this)
+                    .load(task.result)
+                    .into(view)
+            }
+        }
     }
 
 //    사진

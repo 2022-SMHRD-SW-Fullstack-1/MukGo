@@ -35,13 +35,6 @@ class Fragment1_home : Fragment() {
 
         val rvHome = view.findViewById<RecyclerView>(R.id.rvHome)
 
-        val ivHomeWrite = view.findViewById<ImageView>(R.id.ivHomeWrite)
-
-        ivHomeWrite.setOnClickListener {
-            val intent = Intent(context, WriteActivity::class.java)
-            startActivity(intent)
-        }
-
         getHomeBoardData()
 
         adapter = HomeAdapter(requireContext(), homeBoardList, homeMemberList, keyData)
