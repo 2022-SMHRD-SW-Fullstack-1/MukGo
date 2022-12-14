@@ -13,22 +13,17 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import com.bumptech.glide.Glide
 import com.example.mukgoapplication.R
 import com.example.mukgoapplication.auth.MemberVO
 import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 class WriteActivity : AppCompatActivity() {
 
     lateinit var ivWriteImage : ImageView
-    lateinit var etWriteContent:EditText
     var nick = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +43,7 @@ class WriteActivity : AppCompatActivity() {
             val time = FBAuth.getTime()
 
             var key2 = FBDatabase.getAllBoardRef().push().key.toString()
+
             FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time, nick))
 
             imgUpload(key2)

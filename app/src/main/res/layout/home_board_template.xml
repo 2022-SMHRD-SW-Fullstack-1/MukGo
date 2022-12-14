@@ -166,16 +166,8 @@
         android:backgroundTint="#FFFFFF"
         android:insetBottom="0dp"
         app:layout_constraintBottom_toTopOf="@+id/imgHomeContent"
-        app:layout_constraintEnd_toStartOf="@+id/imgDialog"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imgDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
