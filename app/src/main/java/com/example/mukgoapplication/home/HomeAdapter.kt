@@ -19,6 +19,7 @@ import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
 import com.example.mukgoapplication.write.BoardVO
 import com.example.mukgoapplication.write.CommentActivity
+import com.example.mukgoapplication.write.UpdateActivity
 import com.example.mukgoapplication.write.WriteActivity
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -111,7 +112,7 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
                         Log.d("Dialog", "currentItem : $clickItem")
                         if (clickItem == "수정") {
                             Log.d("DialogEdit", "수정!!")
-                            val intent = Intent(context, WriteActivity::class.java)
+                            val intent = Intent(context, UpdateActivity::class.java)
                             intent.putExtra("boardKey", keyData[position])
                             context.startActivity(intent)
                         } else if (clickItem == "삭제") {
