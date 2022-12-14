@@ -13,6 +13,7 @@ import com.example.mukgoapplication.map.AutocompleteAddressActivity
 import com.example.mukgoapplication.profile.ProfileActivity
 import com.example.mukgoapplication.setting.SettingActivity
 import com.example.mukgoapplication.write.WriteActivity
+import com.example.mukgoapplication.utils.FBAuth
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
@@ -32,8 +33,12 @@ class MainActivity : AppCompatActivity() {
         val key = FirebaseAuth.getInstance().uid.toString()
         getImageData(key)
 
+        val uid = FBAuth.getUid()
+
         binding.ivProfile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra("uid", uid)
+            startActivity(intent)
         }
 
         binding.ivSetting.setOnClickListener {
@@ -77,11 +82,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun getImageData(key : String){
+    fun getImageData(key: String) {
         val storageReference = Firebase.storage.reference.child("$key.png")
 
-        storageReference.downloadUrl.addOnCompleteListener { task->
-            if (task.isSuccessful){
+        storageReference.downloadUrl.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
                 Glide.with(this)
                     .load(task.result)
                     .into(imgContent)
