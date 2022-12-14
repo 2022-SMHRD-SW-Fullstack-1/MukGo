@@ -52,7 +52,7 @@
         app:layout_constraintEnd_toEndOf="@+id/etMemberIntro"
         app:layout_constraintStart_toStartOf="@+id/etMemberIntro"
         app:layout_constraintTop_toBottomOf="@+id/etMemberIntro"
-        app:srcCompat="@drawable/image_logo" />
+        app:srcCompat="@drawable/img_user" />
 
     <Button
         android:id="@+id/btnMemberJoin"

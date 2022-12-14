@@ -9,8 +9,10 @@ import com.bumptech.glide.Glide
 import com.example.mukgoapplication.chat.ChatRoomFragment
 import com.example.mukgoapplication.databinding.ActivityMainBinding
 import com.example.mukgoapplication.home.Fragment1_home
+import com.example.mukgoapplication.map.AutocompleteAddressActivity
 import com.example.mukgoapplication.profile.ProfileActivity
 import com.example.mukgoapplication.setting.SettingActivity
+import com.example.mukgoapplication.write.WriteActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
@@ -53,10 +55,12 @@ class MainActivity : AppCompatActivity() {
                     ).commit()
                 }
                 R.id.tap2 -> {
-
+                    val intent = Intent(this, AutocompleteAddressActivity::class.java)
+                    startActivity(intent)
                 }
                 R.id.tap3 -> {
-
+                    val intent = Intent(this, WriteActivity::class.java)
+                    startActivity(intent)
                 }
                 R.id.tap4 -> {
 

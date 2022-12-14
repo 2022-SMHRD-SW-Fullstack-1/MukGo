@@ -29,13 +29,18 @@ class WriteActivity : AppCompatActivity() {
 
     lateinit var ivWriteImage : ImageView
     lateinit var etWriteContent:EditText
+    var nick = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write)
 
-        etWriteContent = findViewById(R.id.etWriteContent)
+        val etWriteContent = findViewById<EditText>(R.id.etWriteContent)
         ivWriteImage = findViewById(R.id.ivWriteImage)
         val btnWriteSubmit = findViewById<Button>(R.id.btnWriteSubmit)
+
+        getUserNick(FBAuth.getUid())
+
         var boardKey = intent.getStringExtra("boardKey").toString()
         if(boardKey!=null){
             getBoardData(boardKey, etWriteContent, ivWriteImage)
@@ -47,6 +52,7 @@ class WriteActivity : AppCompatActivity() {
             val time = FBAuth.getTime()
 
             var key2 = FBDatabase.getAllBoardRef().child(uid).push().key.toString()
+            FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time, nick))
             if (boardKey!=null){
                 key2=boardKey
                 FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time))
@@ -91,7 +97,15 @@ class WriteActivity : AppCompatActivity() {
 //                 taskSnapshot.metadata contains file metadata such as size, content-type, etc.
 
         }
+    }
 
+    fun getUserNick(uid: String){
+        FBDatabase.database.getReference("member").child(uid).get().addOnSuccessListener {
+            val item = it.getValue(MemberVO::class.java) as MemberVO
+            nick = item.nick
+        }.addOnFailureListener{
+            Log.e("firebase", "Error getting data", it)
+        }
 
     }
 

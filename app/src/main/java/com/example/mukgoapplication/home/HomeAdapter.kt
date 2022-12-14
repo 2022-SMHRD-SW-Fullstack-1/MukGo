@@ -50,8 +50,8 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
 
         init {
             imgHomeProfile = itemView.findViewById(R.id.imgHomeProfile)
-            tvHomeNick = itemView.findViewById(R.id.tvHomeContent)
-            imgHomeContent = itemView.findViewById(R.id.imgHomeLike)
+            tvHomeNick = itemView.findViewById(R.id.tvHomeNick)
+            imgHomeContent = itemView.findViewById(R.id.imgHomeContent)
             imgHomeLike = itemView.findViewById(R.id.imgHomeLike)
             imgHomeComment = itemView.findViewById(R.id.imgHomeComment)
             imgHomeBookmark = itemView.findViewById(R.id.imgHomeBookmark)
@@ -67,7 +67,6 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
                 intent.putExtra("uid", uid)
                 context.startActivity(intent)
             }
-
 
         }
 
