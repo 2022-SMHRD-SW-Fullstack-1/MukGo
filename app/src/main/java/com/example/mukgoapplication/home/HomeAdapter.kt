@@ -47,7 +47,7 @@ class HomeAdapter(
         val tvHomeContent: TextView
         val tvHomeTime: TextView
         val btnHomeProfileMove: Button
-
+        val imgDialog: ImageView
         val uid = FBAuth.getUid()
         val route = FBDatabase.getBoardRef().child(uid)
 
@@ -86,7 +86,7 @@ class HomeAdapter(
 
         return ViewHolder(view)
     }
-
+    @SuppressLint("RecyclerView")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.tvHomeNick.text = boardHomeList[position].nick
@@ -158,5 +158,13 @@ class HomeAdapter(
                 Log.d("key", "Fail")
         }
     }
-
+    /**게시글 삭제*/
+    fun deleteBoard(board: BoardVO, key: String) {
+        Log.d("DialogDeleteFun","삭제함수")
+        Log.d("DialogDeleteFunBoard",board.toString())
+        Log.d("DialogDeleteFunBoardKey",key)
+        val data = FBDatabase.getAllBoardRef().child(key)
+        Log.d("DialogDeleteFunBoardData",data.toString())
+        data.removeValue()
+    }
 }
