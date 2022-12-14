@@ -11,6 +11,7 @@ import com.example.mukgoapplication.databinding.ActivityMainBinding
 import com.example.mukgoapplication.home.Fragment1_home
 import com.example.mukgoapplication.profile.ProfileActivity
 import com.example.mukgoapplication.setting.SettingActivity
+import com.example.mukgoapplication.utils.FBAuth
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
@@ -30,8 +31,11 @@ class MainActivity : AppCompatActivity() {
         val key = FirebaseAuth.getInstance().uid.toString()
         getImageData(key)
 
+        val uid = FBAuth.getUid()
+
         binding.ivProfile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra("uid", uid)
             startActivity(intent)
         }
 
