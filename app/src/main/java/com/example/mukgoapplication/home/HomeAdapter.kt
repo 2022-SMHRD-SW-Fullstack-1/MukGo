@@ -17,6 +17,9 @@ import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
 import com.example.mukgoapplication.write.BoardVO
 import com.example.mukgoapplication.write.CommentActivity
+
+import com.example.mukgoapplication.write.UpdateActivity
+import com.example.mukgoapplication.write.WriteActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -87,6 +90,31 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
             intent.putExtra("time", boardHomeList[position].time)
 
             context.startActivity(intent)
+        }
+
+        if (FBAuth.checkUid(boardHomeList[position].uid)) {
+            holder.imgDialog.setOnClickListener {
+                val array = arrayOf("수정", "삭제")
+                var clickItem = ""
+                Log.d("imgDialog", "click")
+                AlertDialog.Builder(context)
+                    .setTitle("게시글 관리")
+                    .setItems(array) { dialog, which ->
+                        clickItem = array[which]
+                        Log.d("Dialog", "currentItem : $clickItem")
+                        if (clickItem == "수정") {
+                            Log.d("DialogEdit", "수정!!")
+                            val intent = Intent(context, UpdateActivity::class.java)
+                            intent.putExtra("boardKey", keyData[position])
+                            context.startActivity(intent)
+                        } else if (clickItem == "삭제") {
+                            Log.d("DialogDelete", "삭제!!")
+                            deleteBoard(boardHomeList[position], keyData[position]) // 삭제 호출
+                        }
+                    }
+                    .show()
+
+            }
         }
     }
 
