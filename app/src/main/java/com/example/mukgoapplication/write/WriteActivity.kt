@@ -13,22 +13,17 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import com.bumptech.glide.Glide
 import com.example.mukgoapplication.R
 import com.example.mukgoapplication.auth.MemberVO
 import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 class WriteActivity : AppCompatActivity() {
 
     lateinit var ivWriteImage : ImageView
-    lateinit var etWriteContent:EditText
     var nick = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,20 +36,18 @@ class WriteActivity : AppCompatActivity() {
 
         getUserNick(FBAuth.getUid())
 
-        var boardKey = intent.getStringExtra("boardKey").toString()
-        if(boardKey!=null){
-            getBoardData(boardKey, etWriteContent, ivWriteImage)
-        }
         btnWriteSubmit.setOnClickListener {
             val content = etWriteContent.text.toString()
 
             val uid = FBAuth.getUid()
             val time = FBAuth.getTime()
 
+
+            var key = FBDatabase.getBoardRef().child(uid).push().key.toString()
+            FBDatabase.getBoardRef().child(uid).child(key).setValue(BoardVO(content, uid, time))
+
+
             var key2 = FBDatabase.getAllBoardRef().child(uid).push().key.toString()
-            if (boardKey!=null){
-                key2=boardKey
-            }
             FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time, nick))
             imgUpload(key2)
 
@@ -103,33 +96,6 @@ class WriteActivity : AppCompatActivity() {
             nick = item.nick
         }.addOnFailureListener{
             Log.e("firebase", "Error getting data", it)
-        }
-
-    }
-
-    /**board 에 있는 데이터 전부를 가져오는 작업을 할 것*/
-    fun getBoardData(uid: String, et: EditText, iv: ImageView){
-        FBDatabase.getAllBoardRef().child(uid).get().addOnSuccessListener {
-            val item = it.getValue(BoardVO::class.java)
-            if (item != null) {
-                et.setText(item.content)
-                getImageData(item.uid,iv)
-            }
-
-        }.addOnFailureListener{
-            Log.e("firebase", "Error getting data", it)
-        }
-    }
-
-    fun getImageData(key : String, view: ImageView){
-        val storageReference = Firebase.storage.reference.child("$key.png")
-
-        storageReference.downloadUrl.addOnCompleteListener { task->
-            if (task.isSuccessful){
-                Glide.with(this)
-                    .load(task.result)
-                    .into(view)
-            }
         }
     }
 }
