@@ -47,7 +47,8 @@ class ProfileEditActivity : AppCompatActivity() {
             val intro = etEditIntro.text.toString()
 
             var key = FBDatabase.getMemberRef().child(uid).key.toString()
-            FBDatabase.getMemberRef().child(key).setValue(MemberVO(nick, name, intro))
+            FBDatabase.getMemberRef().child(key).setValue(MemberVO(nick, name, intro, uid))
+            imgUpload(key)
 
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)

@@ -65,23 +65,21 @@ class WriteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write)
 
+        etWriteContent = findViewById<EditText>(R.id.etWriteContent)
+        ivWriteImage = findViewById(R.id.ivWriteImage)
+        ivWriteCamera = findViewById(R.id.ivWriteCamera)
+        val btnWriteSubmit = findViewById<Button>(R.id.btnWriteSubmit)
+
 //        카메라
 
         if (checkPermission(storagePermission, flagPermStorage)) {
             setViews()
         }
 
-        val etWriteContent = findViewById<EditText>(R.id.etWriteContent)
-        ivWriteImage = findViewById(R.id.ivWriteImage)
-        ivWriteCamera = findViewById(R.id.ivWriteCamera)
-        val btnWriteSubmit = findViewById<Button>(R.id.btnWriteSubmit)
+
+
 
         getUserNick(FBAuth.getUid())
-
-        var boardKey = intent.getStringExtra("boardKey").toString()
-        if(boardKey!=null){
-            getBoardData(boardKey, etWriteContent, ivWriteImage)
-        }
 
 //        글쓰기
 
@@ -93,9 +91,7 @@ class WriteActivity : AppCompatActivity() {
 
 
             var key2 = FBDatabase.getAllBoardRef().child(uid).push().key.toString()
-            if (boardKey!=null){
-                key2=boardKey
-            }
+
             FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time, nick))
             imgUpload(key2)
             cameraUpload(key2)
@@ -149,32 +145,6 @@ class WriteActivity : AppCompatActivity() {
             Log.e("firebase", "Error getting data", it)
         }
 
-    }
-
-    /**board 에 있는 데이터 전부를 가져오는 작업을 할 것*/
-    fun getBoardData(uid: String, et: EditText, iv: ImageView){
-        FBDatabase.getAllBoardRef().child(uid).get().addOnSuccessListener {
-            val item = it.getValue(BoardVO::class.java)
-            if (item != null) {
-                et.setText(item.content)
-                getImageData(item.uid,iv)
-            }
-
-        }.addOnFailureListener{
-            Log.e("firebase", "Error getting data", it)
-        }
-    }
-
-    fun getImageData(key : String, view: ImageView){
-        val storageReference = Firebase.storage.reference.child("$key.png")
-
-        storageReference.downloadUrl.addOnCompleteListener { task->
-            if (task.isSuccessful){
-                Glide.with(this)
-                    .load(task.result)
-                    .into(view)
-            }
-        }
     }
 
 //    사진
