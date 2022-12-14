@@ -65,9 +65,12 @@ class WriteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write)
 
-        etWriteContent = findViewById<EditText>(R.id.etWriteContent)
+        etWriteContent = findViewById(R.id.etWriteContent)
         ivWriteImage = findViewById(R.id.ivWriteImage)
         ivWriteCamera = findViewById(R.id.ivWriteCamera)
+
+        checkImage()
+
         val btnWriteSubmit = findViewById<Button>(R.id.btnWriteSubmit)
 
 //        카메라
@@ -75,9 +78,6 @@ class WriteActivity : AppCompatActivity() {
         if (checkPermission(storagePermission, flagPermStorage)) {
             setViews()
         }
-
-
-
 
         getUserNick(FBAuth.getUid())
 
@@ -102,6 +102,7 @@ class WriteActivity : AppCompatActivity() {
 
         ivWriteImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            checkImage()
             launcher.launch(intent)
         }
     }
@@ -127,13 +128,13 @@ class WriteActivity : AppCompatActivity() {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos)
         val data = baos.toByteArray()
 
+
         //            이미지 저장 경로 설정
         var uploadTask = mountainsRef.putBytes(data)
         uploadTask.addOnFailureListener {
 //                 실패 값 다루기
         }.addOnSuccessListener { taskSnapshot ->
 //                 taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-
         }
     }
 
@@ -160,6 +161,7 @@ class WriteActivity : AppCompatActivity() {
         if (checkPermission(cameraPermission, flagPermCamera)) {
             val intent: Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(intent, flagReqCamera)
+            checkImage()
         }
     }
 
@@ -254,5 +256,9 @@ class WriteActivity : AppCompatActivity() {
 
     }
 
+    fun checkImage(){
+        Log.d("imagedata", ivWriteImage.toString())
+        Log.d("imagedata", ivWriteCamera.toString())
+    }
 
 }

@@ -34,8 +34,6 @@ class ProfileActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_profile)
 
-        getProfileBoardData()
-
         val imgProfileProfile = findViewById<ImageView>(R.id.imgProfileProfile)
         val btnProfileMessage = findViewById<Button>(R.id.btnProfileMessage)
         val rvProfileBoard = findViewById<RecyclerView>(R.id.rvProfileBoard)
@@ -46,6 +44,8 @@ class ProfileActivity : AppCompatActivity() {
         val profileUid = intent.getStringExtra("uid").toString()
         getImageData(profileUid, imgProfileProfile)
         getMemberData(profileUid, tvProfileNick, tvProfileName, tvProfileIntro)
+
+        getProfileBoardData(profileUid)
 
         adapter = ProfileAdapter(this, profileBoard, keyData)
         rvProfileBoard.adapter = adapter
@@ -93,13 +93,13 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    fun getProfileBoardData() {
+    fun getProfileBoardData(uid:String) {
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 profileBoard.clear()
                 for (model in snapshot.children) {
                     val item = model.getValue(BoardVO::class.java)
-                    if (item != null && item.uid == FBAuth.getUid()) {
+                    if (item != null && item.uid == uid) {
                         profileBoard.add(item)
                         keyData.add(model.key.toString())
                     }
