@@ -57,6 +57,17 @@ class JoinActivity : AppCompatActivity() {
                 Toast.makeText(this, "비밀번호 재입력을 입력해주세요", Toast.LENGTH_SHORT).show()
             }
 
+            // 이메일이 정상적인지
+            if (!email.contains("@")||!email.contains(".")) {
+                isJoin = false
+                Toast.makeText(this, "올바른 이메일 형식을 입력해주세요", Toast.LENGTH_SHORT).show()
+            }
+            // 이메일의 앞부분이 4자리 이상인지
+            val emailHead = email.split('@')
+            if(emailHead[0].length<4) {
+                isJoin = false
+                Toast.makeText(this, "아이디가 너무 짧습니다", Toast.LENGTH_SHORT).show()
+            }
             // 비밀번호랑 재입력한 비밀번호가 똑같은지
             if (pw != checkPw) {
                 isJoin = false
