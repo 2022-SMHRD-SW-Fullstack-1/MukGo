@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.ivProfile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
         }
 
         binding.ivSetting.setOnClickListener {
@@ -73,11 +74,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun getImageData(key : String){
+    fun getImageData(key: String) {
         val storageReference = Firebase.storage.reference.child("$key.png")
 
-        storageReference.downloadUrl.addOnCompleteListener { task->
-            if (task.isSuccessful){
+        storageReference.downloadUrl.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
                 Glide.with(this)
                     .load(task.result)
                     .into(imgContent)

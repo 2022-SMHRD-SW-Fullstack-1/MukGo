@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mukgoapplication.R
+import com.example.mukgoapplication.auth.MemberVO
 import com.example.mukgoapplication.profile.ProfileActivity
 import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
@@ -20,14 +21,18 @@ import com.example.mukgoapplication.write.CommentActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import java.lang.reflect.Member
 
-class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, val keyData: ArrayList<String>) :
+class HomeAdapter(
+    val context: Context,
+    val boardHomeList: ArrayList<BoardVO>,
+    val memberHomeList : ArrayList<MemberVO>,
+    val keyData: ArrayList<String>
+) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imgHomeContent : ImageView
+        val imgHomeContent: ImageView
         val imgHomeProfile: ImageView
         val tvHomeNick: TextView
         val imgHomeLike: ImageView
@@ -36,10 +41,7 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
         val tvHomeLikeNum: TextView
         val tvHomeContent: TextView
         val tvHomeTime: TextView
-        val btnHomeProfileMove : Button
-
-        val uid = FBAuth.getUid()
-        val route = FBDatabase.getBoardRef().child(uid)
+        val btnHomeProfileMove: Button
 
         init {
             imgHomeProfile = itemView.findViewById(R.id.imgHomeProfile)
@@ -52,16 +54,7 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
             tvHomeContent = itemView.findViewById(R.id.tvHomeContent)
             tvHomeTime = itemView.findViewById(R.id.tvHomeTime)
             btnHomeProfileMove = itemView.findViewById(R.id.btnHomeProfileMove)
-
-            btnHomeProfileMove.setOnClickListener {
-                val intent = Intent(context, ProfileActivity::class.java)
-                intent.putExtra("uid", uid)
-                context.startActivity(intent)
-            }
-
         }
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -72,12 +65,15 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         holder.tvHomeNick.text = boardHomeList[position].nick
         holder.tvHomeContent.text = boardHomeList[position].content
         holder.tvHomeTime.text = boardHomeList[position].time
         Glide.with(context).load(boardHomeList[position].image).into(holder.imgHomeContent)
+
         getHomeBoardImage(keyData[position], holder.imgHomeContent)
         getHomeBoardImage(boardHomeList[position].uid, holder.imgHomeProfile)
+
         holder.imgHomeComment.setOnClickListener {
             val intent = Intent(context, CommentActivity::class.java)
             intent.putExtra("boardKey", keyData[position])
@@ -87,23 +83,29 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
 
             context.startActivity(intent)
         }
+
+        holder.btnHomeProfileMove.setOnClickListener {
+            val intent = Intent(context, ProfileActivity::class.java)
+            intent.putExtra("uid", boardHomeList[position].uid)
+
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
         return boardHomeList.size
     }
 
-    fun getHomeBoardImage(key : String, view: ImageView){
+    fun getHomeBoardImage(key: String, view: ImageView) {
         val storageReference = Firebase.storage.reference.child("$key.png")
 
-        storageReference.downloadUrl.addOnCompleteListener { task->
-            if(task.isSuccessful){
+        storageReference.downloadUrl.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
                 Log.d("key", "Success")
                 Glide.with(context)
                     .load(task.result)
                     .into(view)
-            }
-            else
+            } else
                 Log.d("key", "Fail")
         }
     }
