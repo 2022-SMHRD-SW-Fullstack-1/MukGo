@@ -84,6 +84,7 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
             intent.putExtra("profileUid", boardHomeList[position].uid)
             intent.putExtra("nick", boardHomeList[position].nick)
             intent.putExtra("content", boardHomeList[position].content)
+            intent.putExtra("time", boardHomeList[position].time)
 
             context.startActivity(intent)
         }
