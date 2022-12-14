@@ -13,7 +13,11 @@ import com.example.mukgoapplication.write.BoardVO
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
-class ProfileAdapter(val context: Context, val profileBoardList: ArrayList<BoardVO>, val keyData : ArrayList<String>) :
+class ProfileAdapter(
+    val context: Context,
+    val profileBoardList: ArrayList<BoardVO>,
+    val keyData: ArrayList<String>
+) :
     RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -32,7 +36,7 @@ class ProfileAdapter(val context: Context, val profileBoardList: ArrayList<Board
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        getProfileBoard(profileBoardList[position].uid, holder.imgProfileBoard)
+        getProfileBoard(keyData[position], holder.imgProfileBoard)
     }
 
     override fun getItemCount(): Int {

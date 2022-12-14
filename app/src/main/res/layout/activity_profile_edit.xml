@@ -33,9 +33,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="사진수정"
-        android:textColor="#1C1818"
-        android:textSize="20sp"
+        android:text="프로필 사진 수정"
+        android:textColor="@color/mainColor"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/imgEditProfile"
         app:layout_constraintStart_toStartOf="@+id/imgEditProfile"
         app:layout_constraintTop_toBottomOf="@+id/imgEditProfile" />
