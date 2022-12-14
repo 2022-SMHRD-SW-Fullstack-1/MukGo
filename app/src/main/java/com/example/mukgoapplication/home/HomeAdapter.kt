@@ -1,7 +1,7 @@
 package com.example.mukgoapplication.home
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,7 +19,7 @@ import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
 import com.example.mukgoapplication.write.BoardVO
 import com.example.mukgoapplication.write.CommentActivity
-import com.google.firebase.auth.FirebaseAuth
+import com.example.mukgoapplication.write.WriteActivity
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
@@ -81,6 +81,7 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
         return ViewHolder(view)
     }
 
+    @SuppressLint("RecyclerView")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.tvHomeNick.text = boardHomeList[position].nick
         holder.tvHomeContent.text = boardHomeList[position].content
@@ -98,27 +99,30 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
 
             context.startActivity(intent)
         }
-        holder.imgDialog.setOnClickListener {
-            val array = arrayOf("수정", "삭제")
-            var clickItem=""
-            Log.d("imgDialog","click")
-            AlertDialog.Builder(context)
-                .setTitle("게시글 관리")
-                .setItems(array, object : DialogInterface.OnClickListener {
-                    override fun onClick(dialog: DialogInterface, which: Int) {
+
+        if (FBAuth.checkUid(boardHomeList[position].uid)) {
+            holder.imgDialog.setOnClickListener {
+                val array = arrayOf("수정", "삭제")
+                var clickItem = ""
+                Log.d("imgDialog", "click")
+                AlertDialog.Builder(context)
+                    .setTitle("게시글 관리")
+                    .setItems(array) { dialog, which ->
                         clickItem = array[which]
                         Log.d("Dialog", "currentItem : $clickItem")
-                        if (clickItem.equals("수정")){
-                            Log.d("DialogEdit","수정!!")
-
-                        } else if (clickItem.equals("삭제")){
-                            Log.d("DialogDelete","삭제!!")
-                            deleteBoard(boardHomeList[position]) // 삭제 호출
+                        if (clickItem == "수정") {
+                            Log.d("DialogEdit", "수정!!")
+                            val intent = Intent(context, WriteActivity::class.java)
+                            intent.putExtra("boardKey", keyData[position])
+                            context.startActivity(intent)
+                        } else if (clickItem == "삭제") {
+                            Log.d("DialogDelete", "삭제!!")
+                            deleteBoard(boardHomeList[position], keyData[position]) // 삭제 호출
                         }
                     }
-                })
-                .show()
+                    .show()
 
+            }
         }
     }
 
@@ -140,8 +144,14 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
                 Log.d("key", "Fail")
         }
     }
-    fun deleteBoard(board: BoardVO) {
+    /**게시글 삭제*/
+    fun deleteBoard(board: BoardVO, key: String) {
         Log.d("DialogDeleteFun","삭제함수")
         Log.d("DialogDeleteFunBoard",board.toString())
+        Log.d("DialogDeleteFunBoardKey",key)
+        val data = FBDatabase.getAllBoardRef().child(key)
+        Log.d("DialogDeleteFunBoardData",data.toString())
+        data.removeValue()
     }
+
 }
