@@ -1,5 +1,6 @@
 package com.example.mukgoapplication.utils
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,6 +24,14 @@ class FBAuth {
             // "yyyy.MM.dd HH:mm:sss"
             val time = SimpleDateFormat("yyyy.MM.dd HH:mm:sss", Locale.KOREAN).format(currentTime)
             return time
+        }
+
+        /**사용자uid와 targetUid 비교
+         * @return Boolean*/
+        fun checkUid(targetUid: String):Boolean {
+            val userUid = FBAuth.getUid()
+            Log.d("check"," 사용자uid: $userUid, targetUid: $targetUid")
+            return targetUid==userUid
         }
 
     }
