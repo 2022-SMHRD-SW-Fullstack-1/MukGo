@@ -22,6 +22,15 @@ class FBDatabase {
             return database.getReference("member")
         }
 
+        fun getCommentRef(key: String) : DatabaseReference {
+            return database.getReference("comment").child(key)
+        }
+
+        fun getUserImg(){
+
+        }
+
+
 //        fun getContentRef(): DatabaseReference {
 //            return database.getReference("content")
 //        }

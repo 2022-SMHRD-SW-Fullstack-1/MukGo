@@ -39,10 +39,11 @@ class WriteActivity : AppCompatActivity() {
 
             var key = FBDatabase.getBoardRef().child(uid).push().key.toString()
             FBDatabase.getBoardRef().child(uid).child(key).setValue(BoardVO(content, uid, time))
-            imgUpload(key)
+
 
             var key2 = FBDatabase.getAllBoardRef().child(uid).push().key.toString()
             FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time))
+            imgUpload(key2)
 
             finish()
         }
