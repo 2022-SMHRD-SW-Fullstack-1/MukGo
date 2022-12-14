@@ -43,7 +43,7 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
 
         init {
             imgHomeProfile = itemView.findViewById(R.id.imgHomeProfile)
-            tvHomeNick = itemView.findViewById(R.id.tvHomeContent)
+            tvHomeNick = itemView.findViewById(R.id.tvHomeNick)
             imgHomeContent = itemView.findViewById(R.id.imgHomeContent)
             imgHomeLike = itemView.findViewById(R.id.imgHomeLike)
             imgHomeComment = itemView.findViewById(R.id.imgHomeComment)

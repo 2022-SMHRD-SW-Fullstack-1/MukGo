@@ -7,11 +7,14 @@ import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.mukgoapplication.R
+import com.example.mukgoapplication.auth.MemberVO
 import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
@@ -21,6 +24,7 @@ import com.google.firebase.storage.ktx.storage
 class WriteActivity : AppCompatActivity() {
 
     lateinit var ivWriteImage : ImageView
+    var nick = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +33,8 @@ class WriteActivity : AppCompatActivity() {
         val etWriteContent = findViewById<EditText>(R.id.etWriteContent)
         ivWriteImage = findViewById(R.id.ivWriteImage)
         val btnWriteSubmit = findViewById<Button>(R.id.btnWriteSubmit)
+
+        getUserNick(FBAuth.getUid())
 
         btnWriteSubmit.setOnClickListener {
             val content = etWriteContent.text.toString()
@@ -42,7 +48,7 @@ class WriteActivity : AppCompatActivity() {
 
 
             var key2 = FBDatabase.getAllBoardRef().child(uid).push().key.toString()
-            FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time))
+            FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time, nick))
             imgUpload(key2)
 
             finish()
@@ -82,7 +88,14 @@ class WriteActivity : AppCompatActivity() {
 //                 taskSnapshot.metadata contains file metadata such as size, content-type, etc.
 
         }
+    }
 
-
+    fun getUserNick(uid: String){
+        FBDatabase.database.getReference("member").child(uid).get().addOnSuccessListener {
+            val item = it.getValue(MemberVO::class.java) as MemberVO
+            nick = item.nick
+        }.addOnFailureListener{
+            Log.e("firebase", "Error getting data", it)
+        }
     }
 }
