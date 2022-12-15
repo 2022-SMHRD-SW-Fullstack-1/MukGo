@@ -1,69 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="4dp"
     tools:context=".map.AutocompleteAddressActivity">
-
-    <LinearLayout
-        android:id="@+id/autocomplete_scroll_container"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline22"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="#000000"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="52dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="검색" />
-
-        <com.example.mukgoapplication.model.AutocompleteEditText
-            android:id="@+id/autocomplete_address1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:hint="주소입력"
-            android:imeOptions="actionNext"
-            android:inputType="text" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="66dp" />
+    <FrameLayout
+        android:id="@+id/flMain1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline23"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline22">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="false"/>
+            android:baselineAligned="false"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/autocomplete_address1"
+            app:layout_constraintEnd_toEndOf="@+id/autocomplete_address1"
+            app:layout_constraintStart_toEndOf="@+id/autocomplete_address1"
+            app:layout_constraintTop_toBottomOf="@+id/autocomplete_address1" >
 
-        <!-- Proximity check option provided for development testing convenience.
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="400dp"
+                android:layout_height="match_parent">
+
+                <com.example.mukgoapplication.model.AutocompleteEditText
+                    android:id="@+id/autocomplete_address1"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:autofillHints=""
+                    android:hint="주소입력"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/btnSearch2"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="검색"
+                    app:layout_constraintBottom_toBottomOf="@+id/autocomplete_address1"
+                    app:layout_constraintEnd_toStartOf="@+id/btnNear2"
+                    app:layout_constraintTop_toTopOf="@+id/autocomplete_address1" />
+
+
+                <Button
+                    android:id="@+id/btnNear2"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:text="내 주변"
+                    app:layout_constraintBottom_toBottomOf="@+id/btnSearch2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/btnSearch2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ViewStub
+                android:id="@+id/stub_map"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/panel_map"
+                android:layout="@layout/autocomplete_address_map"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+    <!-- Proximity check option provided for development testing convenience.
          User would typically not control this option. -->
         <CheckBox
             android:id="@+id/cbAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="GPS사용" />
+            android:text="GPS사용"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@+id/autocomplete_address1"
+            app:layout_constraintTop_toBottomOf="@+id/autocomplete_address1" />
 
-        <!-- The map for visual confirmation of the selected address -->
-        <!-- Stub to only load the map after Autocomplete prediction selection -->
-        <ViewStub
-            android:id="@+id/stub_map"
-            android:inflatedId="@+id/panel_map"
-            android:layout="@layout/autocomplete_address_map"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="bottom" />
+    <!-- The map for visual confirmation of the selected address -->
+    <!-- Stub to only load the map after Autocomplete prediction selection -->
 
         <Button
-            android:id="@+id/autocomplete_save_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="save form" />
+        android:id="@+id/autocomplete_save_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="save form"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbAddress" />
 
-        <!-- Reset button provided for development testing convenience. Not recommended for user-facing
+    <!-- Reset button provided for development testing convenience. Not recommended for user-facing
         forms due to risk of mis-click when aiming for Submit button. -->
-        <Button
-            android:id="@+id/autocomplete_reset_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:text="Clear form"/>
-    </LinearLayout>
-</ScrollView>
+    <Button
+        android:id="@+id/autocomplete_reset_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="Clear form"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_save_button" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline22"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/imgae_name" />
+
+    <ImageView
+        android:id="@+id/ivSetting"
+        android:layout_width="30dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline22"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_setting" />
+
+    <ImageView
+        android:id="@+id/ivAlarm"
+        android:layout_width="30dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivSetting"
+        app:layout_constraintEnd_toStartOf="@+id/ivSetting"
+        app:layout_constraintTop_toTopOf="@+id/ivSetting"
+        app:srcCompat="@drawable/img_alarm" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="30dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/img_user"
+        app:civ_border_color="#00FFFFFF"
+        app:civ_border_width="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivAlarm"
+        app:layout_constraintEnd_toStartOf="@+id/ivAlarm"
+        app:layout_constraintTop_toTopOf="@+id/ivAlarm" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:background="#41D6D6D6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline22" />
+</androidx.constraintlayout.widget.ConstraintLayout>

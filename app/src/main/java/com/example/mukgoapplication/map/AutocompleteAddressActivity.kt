@@ -130,6 +130,13 @@ class AutocompleteAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         // Reset the form
         val resetButton = findViewById<Button>(R.id.autocomplete_reset_button)
         resetButton.setOnClickListener { v: View? -> clearForm() }
+
+        val btnNear2 = findViewById<Button>(R.id.btnNear2)
+        btnNear2.setOnClickListener {
+            val intent = Intent(this, MapActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun startAutocompleteIntent() {
@@ -144,7 +151,8 @@ class AutocompleteAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         // Build the autocomplete intent with field, country, and type filters applied
         val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
             .setCountry("KOR")
-            .build(this)
+            .build(this
+            )
 
         startAutocomplete.launch(intent)
     }
