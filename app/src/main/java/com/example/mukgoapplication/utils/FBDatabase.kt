@@ -10,6 +10,9 @@ class FBDatabase {
         val database = Firebase.database
 
 //        FBdatabase.getBoardRef()를 통해 호출
+        fun getBoardRef(): DatabaseReference {
+            return database.getReference("board")
+        }
 
         fun getAllBoardRef() : DatabaseReference{
             return database.getReference("allboard")
@@ -23,12 +26,15 @@ class FBDatabase {
             return database.getReference("comment").child(key)
         }
 
+        fun getChatRef(key: String): DatabaseReference {
+            return database.getReference("chat").child(key)
+        }
+
+        fun getUserImg(){
+
         fun getBookmarkRef() : DatabaseReference{
             return database.getReference("bookmarkList")
         }
-
-
-
 
 
 //        fun getContentRef(): DatabaseReference {

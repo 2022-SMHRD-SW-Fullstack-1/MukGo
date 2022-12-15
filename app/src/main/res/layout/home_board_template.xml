@@ -11,7 +11,7 @@
         android:layout_height="36dp"
         android:layout_marginStart="12dp"
         android:src="@drawable/img_user"
-        app:civ_border_color="#222222"
+        app:civ_border_color="#00FFFFFF"
         app:civ_border_width="2dp"
         app:layout_constraintBottom_toTopOf="@+id/imgHomeContent"
         app:layout_constraintStart_toStartOf="parent"
@@ -173,10 +173,12 @@
 
     <ImageView
         android:id="@+id/imgDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
+        app:srcCompat="@drawable/img_dot" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

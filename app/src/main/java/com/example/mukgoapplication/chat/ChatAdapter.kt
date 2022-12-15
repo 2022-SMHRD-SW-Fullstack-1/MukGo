@@ -31,15 +31,17 @@ class ChatAdapter(val context: Context, val chatList: ArrayList<ChatVO>): Recycl
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        var time = FBAuth.myTime(chatList[position].time)
+
         if (chatList[position].uid == FBAuth.getUid()) {
             holder.tvMsgMy.setText(chatList[position].msg)
-            holder.tvTimeMy.setText(chatList[position].time)
+            holder.tvTimeMy.setText(time)
             holder.tvMsgOpp.isVisible = false
             holder.tvTimeOpp.isVisible = false
 
         } else {
             holder.tvMsgOpp.setText(chatList[position].msg)
-            holder.tvTimeOpp.setText(chatList[position].time)
+            holder.tvTimeOpp.setText(time)
             holder.tvMsgMy.isVisible = false
             holder.tvTimeMy.isVisible = false
         }

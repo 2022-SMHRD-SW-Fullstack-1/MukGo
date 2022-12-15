@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mukgoapplication.R
 import com.example.mukgoapplication.auth.MemberVO
+import com.example.mukgoapplication.chat.ChatActivity
+import com.example.mukgoapplication.chat.ChatRoomVO
 import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
 import com.example.mukgoapplication.write.BoardVO
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
@@ -27,6 +30,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var adapter: ProfileAdapter
     val profileBoard = ArrayList<BoardVO>()
     val keyData = ArrayList<String>()
+    val chatList = ArrayList<ChatRoomVO>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +66,16 @@ class ProfileActivity : AppCompatActivity() {
                 startActivity(intent)
             } else {
                 // 채팅방 연결기능 구현
+                // 채팅방 존재하는지 체크해서 존재하면 키값 가져오고 아니면 채팅방 생성하기
 
+                // 채팅방 생성
+                var key = Firebase.database.getReference("chatroom").push().key.toString()
+                Firebase.database.getReference("chatroom").child(key).setValue(ChatRoomVO(FBAuth.getUid(), profileUid, "아직 보낸 메세지가 없습니다", ""))
+                // 채팅방 이동
+                val intent = Intent(this, ChatActivity::class.java)
+                intent.putExtra("oppUid", profileUid)
+                intent.putExtra("chatroomKey", key)
+                startActivity(intent)
             }
         }
 
@@ -117,4 +130,25 @@ class ProfileActivity : AppCompatActivity() {
         FBDatabase.getAllBoardRef().addValueEventListener(postListener)
     }
 
+    fun getChatRoomData(){
+        val postListener = object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                chatList.clear()
+                // firebase에서 snapshot으로 데이터를 받아온 경우
+                for(model in snapshot.children) {
+                    val item = model.getValue(ChatRoomVO::class.java) as ChatRoomVO
+                    if(item.uidOne == FBAuth.getUid() || item.uidTwo == FBAuth.getUid()) {
+                        chatList.add(item)
+                        keyData.add(model.key.toString())
+                    }
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // 오류가 발생했을 때 실행되는 함수
+            }
+        }
+        FBDatabase.database.getReference("chatroom").addValueEventListener(postListener)
+    }
 }

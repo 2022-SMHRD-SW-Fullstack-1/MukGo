@@ -31,8 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         imgContent = binding.ivProfile
-        val key = FirebaseAuth.getInstance().uid.toString()
-        getImageData(key)
+        getImageData(FBAuth.getUid())
 
         val uid = FBAuth.getUid()
 
