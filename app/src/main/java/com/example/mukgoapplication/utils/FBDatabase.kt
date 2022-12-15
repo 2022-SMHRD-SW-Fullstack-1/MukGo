@@ -9,20 +9,20 @@ class FBDatabase {
     companion object {
         val database = Firebase.database
 
-//        FBdatabase.getBoardRef()를 통해 호출
+        //        FBdatabase.getBoardRef()를 통해 호출
         fun getBoardRef(): DatabaseReference {
             return database.getReference("board")
         }
 
-        fun getAllBoardRef() : DatabaseReference{
+        fun getAllBoardRef(): DatabaseReference {
             return database.getReference("allboard")
         }
 
-        fun getMemberRef() : DatabaseReference {
+        fun getMemberRef(): DatabaseReference {
             return database.getReference("member")
         }
 
-        fun getCommentRef(key: String) : DatabaseReference {
+        fun getCommentRef(key: String): DatabaseReference {
             return database.getReference("comment").child(key)
         }
 
@@ -30,8 +30,9 @@ class FBDatabase {
             return database.getReference("chat").child(key)
         }
 
-        fun getUserImg(){
-
+        fun getUserImg() {}
+        fun getBookmarkRef(): DatabaseReference {
+            return database.getReference("bookmarkList")
         }
 
 
@@ -43,5 +44,6 @@ class FBDatabase {
 //            return database.getReference("bookmarkList")
 //        }
 //        // database 인스턴스를 클래스마다 생성할 필요X
+
     }
 }

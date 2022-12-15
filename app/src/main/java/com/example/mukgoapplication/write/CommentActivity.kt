@@ -43,6 +43,7 @@ class CommentActivity : AppCompatActivity() {
             val boardKey = intent.getStringExtra("boardKey").toString()
             var key =FBDatabase.getCommentRef(boardKey).push().key.toString()
             FBDatabase.getCommentRef(boardKey).child(key).setValue(CommentVO(binding.etCmt.text.toString(), FBAuth.getUid(), FBAuth.getTime()))
+            binding.etCmt.setText("")
         }
     }
 

@@ -1,7 +1,7 @@
 package com.example.mukgoapplication.like
 
-class LikeVO (
-    var like : String = "",
-    var nick : Int = 0,
+data class LikeVO (
+    var like : Int = 0,
+    var uid : String = "",
         ){
 }
