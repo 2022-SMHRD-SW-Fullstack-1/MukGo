@@ -38,12 +38,16 @@ class ChatAdapter(val context: Context, val chatList: ArrayList<ChatVO>): Recycl
             holder.tvTimeMy.setText(time)
             holder.tvMsgOpp.isVisible = false
             holder.tvTimeOpp.isVisible = false
+            holder.tvMsgMy.isVisible = true
+            holder.tvTimeMy.isVisible = true
 
         } else {
             holder.tvMsgOpp.setText(chatList[position].msg)
             holder.tvTimeOpp.setText(time)
             holder.tvMsgMy.isVisible = false
             holder.tvTimeMy.isVisible = false
+            holder.tvMsgOpp.isVisible = true
+            holder.tvTimeOpp.isVisible = true
         }
     }
 
