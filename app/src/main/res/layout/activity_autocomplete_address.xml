@@ -67,6 +67,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/btnNear2"
                     app:layout_constraintTop_toTopOf="@+id/autocomplete_address1" />
 
+
                 <Button
                     android:id="@+id/btnNear2"
                     android:layout_width="90dp"
