@@ -5,5 +5,5 @@ data class BoardVO(
     var uid: String = "",
     var time: String = "",
     val nick: String = "",
-    var image: String = "",
+    val like: String = "0",
 )

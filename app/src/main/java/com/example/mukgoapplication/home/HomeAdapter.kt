@@ -3,11 +3,13 @@ package com.example.mukgoapplication.home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -36,8 +38,9 @@ class HomeAdapter(
     val boardHomeList: ArrayList<BoardVO>,
     var keyData: ArrayList<String>,
     var bookmarkList: ArrayList<String>,
+    var likeList: ArrayList<String>
 
-    ) :
+) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     val uid = FBAuth.getUid()
@@ -77,12 +80,6 @@ class HomeAdapter(
                 context.startActivity(intent)
             }
 
-            btnHomeProfileMove.setOnClickListener {
-                val intent = Intent(context, ProfileActivity::class.java)
-                intent.putExtra("uid", uid)
-                context.startActivity(intent)
-            }
-
         }
 
     }
@@ -100,7 +97,7 @@ class HomeAdapter(
         holder.tvHomeNick.text = boardHomeList[position].nick
         holder.tvHomeContent.text = boardHomeList[position].content
         holder.tvHomeTime.text = boardHomeList[position].time
-        Glide.with(context).load(boardHomeList[position].image).into(holder.imgHomeContent)
+        holder.tvHomeLikeNum.text = boardHomeList[position].like
 
         getHomeBoardImage(keyData[position], holder.imgHomeContent)
         getHomeBoardImage(boardHomeList[position].uid, holder.imgHomeProfile)
@@ -146,7 +143,41 @@ class HomeAdapter(
                     .show()
 
             }
+        } else {
+            holder.imgDialog.visibility = View.INVISIBLE
         }
+
+//        좋아요 클릭
+
+        holder.imgHomeLike.setOnClickListener {
+            val likeRef = database.getReference("like")
+            val fragment1 = Fragment1_home()
+            val bundle = Bundle()
+            bundle.putString("boardKey", keyData[position])
+
+            fragment1.arguments = bundle
+
+            if (likeList.contains(keyData[position])) {
+//                북마크 취소 database에 해당 bookData 삭제
+                likeRef.child(uid).child(keyData[position]).removeValue()
+                holder.imgHomeLike.setImageResource(R.drawable.heartblank)
+                holder.tvHomeLikeNum.text = holder.tvHomeLikeNum.text
+
+            } else {
+                likeRef.child(uid).child(keyData[position]).setValue("like")
+                holder.imgHomeLike.setImageResource(R.drawable.heartfull)
+//                북마크 추가 database에 해당 bookData 추가
+            }
+        }
+
+//        좋아요 표시
+
+        if (likeList.contains(keyData[position])) {
+            holder.imgHomeLike.setImageResource(R.drawable.heartfull)
+        } else {
+            holder.imgHomeLike.setImageResource(R.drawable.heartblank)
+        }
+
 
 //        북마크 표시
         if (bookmarkList.contains(keyData[position])) {
@@ -159,7 +190,7 @@ class HomeAdapter(
 
         holder.imgHomeBookmark.setOnClickListener {
             val bookmarkRef = database.getReference("bookmarkList")
-            Log.d("data1BookmarkList",bookmarkList.toString())
+            Log.d("data1BookmarkList", bookmarkList.toString())
             if (bookmarkList.contains(keyData[position])) {
 //                북마크 취소 database에 해당 bookData 삭제
                 bookmarkRef.child(uid).child(keyData[position]).removeValue()
@@ -176,14 +207,17 @@ class HomeAdapter(
             Log.d("data1List", bookmarkList.toString())
         }
 
-        holder.imgHomeLike.setOnClickListener {
-            Log.d("data1" ,bookmarkList.toString())
-        }
 
     }
 
     override fun getItemCount(): Int {
         return boardHomeList.size
+    }
+
+    fun getHomeLikeNum(key: String, et: EditText) {
+        FBDatabase.getLikeRef().get().addOnSuccessListener {
+            val item = it.getValue() as String
+        }
     }
 
     fun getHomeBoardImage(key: String, view: ImageView) {
@@ -208,5 +242,9 @@ class HomeAdapter(
         val data = FBDatabase.getAllBoardRef().child(key)
         Log.d("DialogDeleteFunBoardData", data.toString())
         data.removeValue()
+    }
+
+    fun getBoardData(uid: String) {
+
     }
 }

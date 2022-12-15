@@ -42,9 +42,10 @@ import java.util.logging.Logger
 
 class WriteActivity : AppCompatActivity() {
 
-    lateinit var ivWriteImage : ImageView
+    lateinit var ivWriteImage: ImageView
     lateinit var ivWriteCamera: ImageView
-    lateinit var etWriteContent:EditText
+    lateinit var etWriteContent: EditText
+
 
     var nick = ""
 //    카메라
@@ -63,6 +64,9 @@ class WriteActivity : AppCompatActivity() {
     val flagReqCamera = 101
     val flagReaStorage = 102
 
+    val uid = FBAuth.getUid()
+    val time = FBAuth.getTime()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write)
@@ -70,6 +74,9 @@ class WriteActivity : AppCompatActivity() {
         etWriteContent = findViewById<EditText>(R.id.etWriteContent)
         ivWriteImage = findViewById(R.id.ivWriteImage)
         ivWriteCamera = findViewById(R.id.ivWriteCamera)
+
+        val imageData = ivWriteImage.toString()
+        val cameraData = ivWriteCamera.toString()
 
         checkImage()
 
@@ -88,19 +95,23 @@ class WriteActivity : AppCompatActivity() {
 
 
         btnWriteSubmit.setOnClickListener {
-            val content = etWriteContent.text.toString()
 
-            val uid = FBAuth.getUid()
-            val time = FBAuth.getTime()
+            if (etWriteContent.text.toString() == "") {
+                Toast.makeText(this, "글을 입력해주세요", Toast.LENGTH_SHORT).show()
+            } else {
+                    val content = etWriteContent.text.toString()
 
-            var key2 = FBDatabase.getAllBoardRef().push().key.toString()
-            FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time, nick))
+                    var key2 = FBDatabase.getAllBoardRef().push().key.toString()
+                    FBDatabase.getAllBoardRef().child(key2)
+                        .setValue(BoardVO(content, uid, time, nick))
 
-            imgUpload(key2)
-            cameraUpload(key2)
+                    imgUpload(key2)
+                    cameraUpload(key2)
 
-            finish()
-        }
+                    finish()
+                }
+            }
+
 
 
         ivWriteImage.setOnClickListener {
@@ -141,11 +152,11 @@ class WriteActivity : AppCompatActivity() {
         }
     }
 
-    fun getUserNick(uid: String){
+    fun getUserNick(uid: String) {
         FBDatabase.database.getReference("member").child(uid).get().addOnSuccessListener {
             val item = it.getValue(MemberVO::class.java) as MemberVO
             nick = item.nick
-        }.addOnFailureListener{
+        }.addOnFailureListener {
             Log.e("firebase", "Error getting data", it)
         }
     }
@@ -259,7 +270,7 @@ class WriteActivity : AppCompatActivity() {
 
     }
 
-    fun checkImage(){
+    fun checkImage() {
         Log.d("imagedata", ivWriteImage.toString())
         Log.d("imagedata", ivWriteCamera.toString())
     }

@@ -1,5 +1,6 @@
 package com.example.mukgoapplication.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract.Data
@@ -30,8 +31,14 @@ class Fragment1_home : Fragment() {
     var homeBoardList = ArrayList<BoardVO>()
     lateinit var adapter: HomeAdapter
     var keyData = ArrayList<String>()
+    var homelikeList = ArrayList<String>()
 
-    lateinit var bookmarkRef : DatabaseReference
+
+    val uid = FBAuth.getUid()
+
+
+
+    lateinit var bookmarkRef: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,19 +46,39 @@ class Fragment1_home : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment1_home, container, false)
-        val database = Firebase.database
         val rvHome = view.findViewById<RecyclerView>(R.id.rvHome)
-        bookmarkRef  = database.getReference("bookList")
-
         getHomeBoardData()
         getBookMarkData()
+        getHomeLikeData()
 
-        adapter = HomeAdapter(requireContext(), homeBoardList, keyData, bookmarkList)
+
+        adapter = HomeAdapter(requireContext(), homeBoardList, keyData, bookmarkList, homelikeList)
 
         rvHome.adapter = adapter
         rvHome.layoutManager = LinearLayoutManager(requireContext())
 
         return view
+    }
+
+    fun getHomeLikeData() {
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                homelikeList.clear()
+                for (model in snapshot.children) {
+                    val item = model.getValue() as String
+                    if (item != null) {
+                        homelikeList.add(model.key.toString())
+                    }
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        }
+        FBDatabase.getLikeRef().child(uid).addValueEventListener(postListener)
     }
 
     fun getHomeBoardData() {
@@ -63,7 +90,6 @@ class Fragment1_home : Fragment() {
                     if (item != null) {
                         homeBoardList.add(item)
                     }
-                    Log.d("key", model.key.toString())
                     keyData.add(model.key.toString())
                 }
                 homeBoardList.reverse()
@@ -97,7 +123,7 @@ class Fragment1_home : Fragment() {
             }
 
         }
-        FBDatabase.getBookmarkRef().child(FBAuth.getUid()).addValueEventListener(postListener)
+        FBDatabase.getBookmarkRef().child(uid).addValueEventListener(postListener)
     }
 
 }
