@@ -87,20 +87,21 @@
         android:id="@+id/imgHomeBookmark"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline6"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgHomeComment"
+        app:layout_constraintStart_toEndOf="@+id/imgHomeComment"
+        app:layout_constraintTop_toTopOf="@+id/imgHomeComment"
         app:srcCompat="@drawable/bookmarkblank" />
 
     <ImageView
         android:id="@+id/imgHomeShare"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imgHomeComment"
-        app:layout_constraintStart_toEndOf="@+id/imgHomeComment"
-        app:layout_constraintTop_toTopOf="@+id/imgHomeComment"
+        android:layout_marginEnd="16dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline6"
         app:srcCompat="@drawable/share" />
 
     <androidx.constraintlayout.widget.Guideline
