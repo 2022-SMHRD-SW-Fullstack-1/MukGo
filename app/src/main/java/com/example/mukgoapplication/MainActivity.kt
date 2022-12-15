@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.example.mukgoapplication.bookmark.Fragment_bookmark
 import com.example.mukgoapplication.chat.ChatRoomFragment
 import com.example.mukgoapplication.databinding.ActivityMainBinding
 import com.example.mukgoapplication.home.Fragment1_home
@@ -68,7 +69,10 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.tap4 -> {
-
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.flMain,
+                        Fragment_bookmark()
+                    ).commit()
                 }
                 R.id.tap5 -> {
                     supportFragmentManager.beginTransaction().replace(

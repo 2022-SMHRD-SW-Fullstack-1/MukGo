@@ -24,6 +24,9 @@ import com.example.mukgoapplication.write.CommentActivity
 import com.example.mukgoapplication.write.UpdateActivity
 import com.example.mukgoapplication.write.WriteActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.lang.reflect.Member
@@ -31,12 +34,15 @@ import java.lang.reflect.Member
 class HomeAdapter(
     val context: Context,
     val boardHomeList: ArrayList<BoardVO>,
-    val memberHomeList : ArrayList<MemberVO>,
-    val keyData: ArrayList<String>
-) :
+    var keyData: ArrayList<String>,
+    var bookmarkList: ArrayList<String>,
+
+    ) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-
+    val uid = FBAuth.getUid()
+    val database = Firebase.database
+    val auth: FirebaseAuth = Firebase.auth
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgHomeContent: ImageView
@@ -50,8 +56,6 @@ class HomeAdapter(
         val tvHomeTime: TextView
         val btnHomeProfileMove: Button
         val imgDialog: ImageView
-        val uid = FBAuth.getUid()
-        val route = FBDatabase.getBoardRef().child(uid)
 
         init {
             imgHomeProfile = itemView.findViewById(R.id.imgHomeProfile)
@@ -65,7 +69,7 @@ class HomeAdapter(
             tvHomeTime = itemView.findViewById(R.id.tvHomeTime)
             btnHomeProfileMove = itemView.findViewById(R.id.btnHomeProfileMove)
 
-            imgDialog=itemView.findViewById(R.id.imgDialog)
+            imgDialog = itemView.findViewById(R.id.imgDialog)
 
             btnHomeProfileMove.setOnClickListener {
                 val intent = Intent(context, ProfileActivity::class.java)
@@ -81,7 +85,6 @@ class HomeAdapter(
 
         }
 
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -90,6 +93,7 @@ class HomeAdapter(
 
         return ViewHolder(view)
     }
+
     @SuppressLint("RecyclerView")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
@@ -143,6 +147,39 @@ class HomeAdapter(
 
             }
         }
+
+//        북마크 표시
+        if (bookmarkList.contains(keyData[position])) {
+            holder.imgHomeBookmark.setImageResource(R.drawable.bookmarkfull)
+        } else {
+            holder.imgHomeBookmark.setImageResource(R.drawable.bookmarkblank)
+        }
+
+//        북마크 클릭 시
+
+        holder.imgHomeBookmark.setOnClickListener {
+            val bookmarkRef = database.getReference("bookmarkList")
+            Log.d("data1BookmarkList",bookmarkList.toString())
+            if (bookmarkList.contains(keyData[position])) {
+//                북마크 취소 database에 해당 bookData 삭제
+                bookmarkRef.child(uid).child(keyData[position]).removeValue()
+                holder.imgHomeBookmark.setImageResource(R.drawable.bookmarkblank)
+                Log.d("data1", "취소 success")
+
+            } else {
+                bookmarkRef.child(auth.currentUser!!.uid).child(keyData[position]).setValue("good")
+                holder.imgHomeBookmark.setImageResource(R.drawable.bookmarkfull)
+//                북마크 추가 database에 해당 bookData 추가
+                Log.d("data1List", bookmarkList.toString())
+                Log.d("data1", keyData[position].toString())
+            }
+            Log.d("data1List", bookmarkList.toString())
+        }
+
+        holder.imgHomeLike.setOnClickListener {
+            Log.d("data1" ,bookmarkList.toString())
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -162,13 +199,14 @@ class HomeAdapter(
                 Log.d("key", "Fail")
         }
     }
+
     /**게시글 삭제*/
     fun deleteBoard(board: BoardVO, key: String) {
-        Log.d("DialogDeleteFun","삭제함수")
-        Log.d("DialogDeleteFunBoard",board.toString())
-        Log.d("DialogDeleteFunBoardKey",key)
+        Log.d("DialogDeleteFun", "삭제함수")
+        Log.d("DialogDeleteFunBoard", board.toString())
+        Log.d("DialogDeleteFunBoardKey", key)
         val data = FBDatabase.getAllBoardRef().child(key)
-        Log.d("DialogDeleteFunBoardData",data.toString())
+        Log.d("DialogDeleteFunBoardData", data.toString())
         data.removeValue()
     }
 }
