@@ -26,6 +26,10 @@ class FBDatabase {
             return database.getReference("comment").child(key)
         }
 
+        fun getChatRef(key: String): DatabaseReference {
+            return database.getReference("chat").child(key)
+        }
+
         fun getUserImg(){
 
         }

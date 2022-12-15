@@ -1,6 +1,7 @@
 package com.example.mukgoapplication.chat
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mukgoapplication.R
+import com.example.mukgoapplication.auth.MemberVO
+import com.example.mukgoapplication.utils.FBAuth
+import com.example.mukgoapplication.utils.FBDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -35,6 +39,13 @@ class ChatRoomAdapter(val context: Context, val chatroomList: ArrayList<ChatRoom
             tvCRTNick = itemView.findViewById(R.id.tvCRTNick)
             tvCRTLastMsg = itemView.findViewById(R.id.tvCRTLastMsg)
             tvCRTLastMsgTime = itemView.findViewById(R.id.tvCRTLastMsgTime)
+
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    monItemClickListener.onItemClick(itemView, position)
+                }
+            }
         }
     }
 
@@ -45,18 +56,40 @@ class ChatRoomAdapter(val context: Context, val chatroomList: ArrayList<ChatRoom
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val uid = chatroomList[position].opponentUID
-        val img = Firebase.storage.reference.child("$uid.png")
-        Glide.with(context).load(img).into(holder.imgCRT)
+        var oppUid = chatroomList[position].uidOne
+        if (chatroomList[position].uidOne == FBAuth.getUid())
+            oppUid = chatroomList[position].uidTwo
 
-        val nick = Firebase.database.getReference("").child(uid).get()
-        holder.tvCRTNick.setText(nick.toString())
+        getUserNick(oppUid, holder.tvCRTNick, holder.imgCRT)
 
         holder.tvCRTLastMsg.setText(chatroomList[position].lastChatMsg)
-        holder.tvCRTLastMsgTime.setText(chatroomList[position].lastChatTime)
+        holder.tvCRTLastMsgTime.setText(FBAuth.myTime(chatroomList[position].lastChatTime))
     }
 
     override fun getItemCount(): Int {
         return chatroomList.size
+    }
+
+    fun getImageData(key : String, view: ImageView){
+        val storageReference = Firebase.storage.reference.child("$key.png")
+
+        storageReference.downloadUrl.addOnCompleteListener { task->
+            if (task.isSuccessful){
+                Glide.with(context)
+                    .load(task.result)
+                    .into(view)
+            }
+        }
+    }
+
+    fun getUserNick(uid: String, tv: TextView, iv: ImageView){
+        FBDatabase.database.getReference("member").child(uid).get().addOnSuccessListener {
+            val item = it.getValue(MemberVO::class.java) as MemberVO
+            tv.setText(item.nick)
+            getImageData(item.uid, iv)
+
+        }.addOnFailureListener{
+            Log.e("firebase", "Error getting data", it)
+        }
     }
 }
