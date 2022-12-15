@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
+import com.example.mukgoapplication.MainActivity
 import com.example.mukgoapplication.R
 import com.example.mukgoapplication.auth.MemberVO
 import com.example.mukgoapplication.utils.FBAuth
@@ -39,10 +40,13 @@ class UpdateActivity : AppCompatActivity() {
         ivWriteImage = findViewById(R.id.ivWriteImage)
         val btnWriteSubmit = findViewById<Button>(R.id.btnWriteSubmit)
 
+
         getUserNick(FBAuth.getUid())
 
         var boardKey = intent.getStringExtra("boardKey").toString()
         getBoardData(boardKey, etWriteContent, ivWriteImage)
+
+        getImageData(boardKey, ivWriteImage)
 
         btnWriteSubmit.setOnClickListener {
             val content = etWriteContent.text.toString()
@@ -108,7 +112,6 @@ class UpdateActivity : AppCompatActivity() {
         FBDatabase.getAllBoardRef().child(uid).get().addOnSuccessListener {
             val item = it.getValue(BoardVO::class.java) as BoardVO
             et.setText(item.content)
-            getImageData(item.uid, iv)
         }.addOnFailureListener {
             Log.e("firebase", "Error getting data", it)
         }

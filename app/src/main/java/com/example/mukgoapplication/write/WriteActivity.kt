@@ -22,7 +22,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-
 import com.bumptech.glide.Glide
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -34,14 +33,16 @@ import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
 import com.google.android.datatransport.runtime.logging.Logging.d
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.util.logging.Logger
 
 class WriteActivity : AppCompatActivity() {
 
-
-    lateinit var ivWriteImage: ImageView
+    lateinit var ivWriteImage : ImageView
     lateinit var ivWriteCamera: ImageView
     lateinit var etWriteContent:EditText
 
@@ -66,7 +67,7 @@ class WriteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write)
 
-        etWriteContent = findViewById(R.id.etWriteContent)
+        etWriteContent = findViewById<EditText>(R.id.etWriteContent)
         ivWriteImage = findViewById(R.id.ivWriteImage)
         ivWriteCamera = findViewById(R.id.ivWriteCamera)
 
@@ -92,9 +93,7 @@ class WriteActivity : AppCompatActivity() {
             val uid = FBAuth.getUid()
             val time = FBAuth.getTime()
 
-
             var key2 = FBDatabase.getAllBoardRef().push().key.toString()
-
             FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time, nick))
 
             imgUpload(key2)
