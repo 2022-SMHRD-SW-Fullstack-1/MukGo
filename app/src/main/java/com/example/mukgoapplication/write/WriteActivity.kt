@@ -47,7 +47,7 @@ class WriteActivity : AppCompatActivity() {
             val uid = FBAuth.getUid()
             val time = FBAuth.getTime()
 
-            var key2 = FBDatabase.getAllBoardRef().push().key.toString()
+            var key2 = FBDatabase.getAllBoardRef().child(uid).push().key.toString()
             FBDatabase.getAllBoardRef().child(key2).setValue(BoardVO(content, uid, time, nick))
 
             imgUpload(key2)
