@@ -1,5 +1,6 @@
 package com.example.mukgoapplication.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -9,9 +10,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mukgoapplication.R
+import com.example.mukgoapplication.auth.MemberVO
 import com.example.mukgoapplication.profile.ProfileActivity
 import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
@@ -23,14 +26,20 @@ import com.example.mukgoapplication.write.WriteActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import java.lang.reflect.Member
 
-class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, val keyData: ArrayList<String>) :
+class HomeAdapter(
+    val context: Context,
+    val boardHomeList: ArrayList<BoardVO>,
+    val memberHomeList : ArrayList<MemberVO>,
+    val keyData: ArrayList<String>
+) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imgHomeContent : ImageView
+        val imgHomeContent: ImageView
         val imgHomeProfile: ImageView
         val tvHomeNick: TextView
         val imgHomeLike: ImageView
@@ -39,8 +48,8 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
         val tvHomeLikeNum: TextView
         val tvHomeContent: TextView
         val tvHomeTime: TextView
-        val btnHomeProfileMove : Button
-
+        val btnHomeProfileMove: Button
+        val imgDialog: ImageView
         val uid = FBAuth.getUid()
         val route = FBDatabase.getBoardRef().child(uid)
 
@@ -55,6 +64,14 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
             tvHomeContent = itemView.findViewById(R.id.tvHomeContent)
             tvHomeTime = itemView.findViewById(R.id.tvHomeTime)
             btnHomeProfileMove = itemView.findViewById(R.id.btnHomeProfileMove)
+
+            imgDialog=itemView.findViewById(R.id.imgDialog)
+
+            btnHomeProfileMove.setOnClickListener {
+                val intent = Intent(context, ProfileActivity::class.java)
+                intent.putExtra("uid", uid)
+                context.startActivity(intent)
+            }
 
             btnHomeProfileMove.setOnClickListener {
                 val intent = Intent(context, ProfileActivity::class.java)
@@ -73,14 +90,17 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
 
         return ViewHolder(view)
     }
-
+    @SuppressLint("RecyclerView")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         holder.tvHomeNick.text = boardHomeList[position].nick
         holder.tvHomeContent.text = boardHomeList[position].content
         holder.tvHomeTime.text = boardHomeList[position].time
         Glide.with(context).load(boardHomeList[position].image).into(holder.imgHomeContent)
+
         getHomeBoardImage(keyData[position], holder.imgHomeContent)
         getHomeBoardImage(boardHomeList[position].uid, holder.imgHomeProfile)
+
         holder.imgHomeComment.setOnClickListener {
             val intent = Intent(context, CommentActivity::class.java)
             intent.putExtra("boardKey", keyData[position])
@@ -88,6 +108,13 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
             intent.putExtra("nick", boardHomeList[position].nick)
             intent.putExtra("content", boardHomeList[position].content)
             intent.putExtra("time", boardHomeList[position].time)
+
+            context.startActivity(intent)
+        }
+
+        holder.btnHomeProfileMove.setOnClickListener {
+            val intent = Intent(context, ProfileActivity::class.java)
+            intent.putExtra("uid", boardHomeList[position].uid)
 
             context.startActivity(intent)
         }
@@ -122,19 +149,26 @@ class HomeAdapter(val context: Context, val boardHomeList: ArrayList<BoardVO>, v
         return boardHomeList.size
     }
 
-    fun getHomeBoardImage(key : String, view: ImageView){
+    fun getHomeBoardImage(key: String, view: ImageView) {
         val storageReference = Firebase.storage.reference.child("$key.png")
 
-        storageReference.downloadUrl.addOnCompleteListener { task->
-            if(task.isSuccessful){
+        storageReference.downloadUrl.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
                 Log.d("key", "Success")
                 Glide.with(context)
                     .load(task.result)
                     .into(view)
-            }
-            else
+            } else
                 Log.d("key", "Fail")
         }
     }
-
+    /**게시글 삭제*/
+    fun deleteBoard(board: BoardVO, key: String) {
+        Log.d("DialogDeleteFun","삭제함수")
+        Log.d("DialogDeleteFunBoard",board.toString())
+        Log.d("DialogDeleteFunBoardKey",key)
+        val data = FBDatabase.getAllBoardRef().child(key)
+        Log.d("DialogDeleteFunBoardData",data.toString())
+        data.removeValue()
+    }
 }

@@ -7,24 +7,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.mukgoapplication.R
+import com.example.mukgoapplication.auth.MemberVO
 import com.example.mukgoapplication.utils.FBDatabase
 import com.example.mukgoapplication.write.BoardVO
 import com.example.mukgoapplication.write.WriteActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 
 class Fragment1_home : Fragment() {
 
     var homeBoardList = ArrayList<BoardVO>()
+    var homeMemberList = ArrayList<MemberVO>()
     lateinit var adapter: HomeAdapter
     val keyData = ArrayList<String>()
 
@@ -39,7 +37,7 @@ class Fragment1_home : Fragment() {
 
         getHomeBoardData()
 
-        adapter = HomeAdapter(requireContext(), homeBoardList, keyData)
+        adapter = HomeAdapter(requireContext(), homeBoardList, homeMemberList, keyData)
 
         rvHome.adapter = adapter
         rvHome.layoutManager = LinearLayoutManager(requireContext())

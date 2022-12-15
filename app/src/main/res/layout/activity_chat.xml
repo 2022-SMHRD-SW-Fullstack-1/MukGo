@@ -34,15 +34,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChat"
         android:layout_width="0dp"
-        android:layout_height="470dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="64dp"
         android:background="#E8E8E8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -51,15 +50,17 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.12" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgChat"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="12dp"
+        android:src="@drawable/img_user"
+        app:civ_border_color="#00FFFFFF"
+        app:civ_border_width="2dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvChatNick"
