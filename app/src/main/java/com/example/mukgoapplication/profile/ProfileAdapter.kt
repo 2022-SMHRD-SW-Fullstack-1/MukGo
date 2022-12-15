@@ -1,11 +1,13 @@
 package com.example.mukgoapplication.profile
 
 import android.content.Context
+import android.content.Intent
 import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mukgoapplication.R
@@ -37,6 +39,14 @@ class ProfileAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getProfileBoard(keyData[position], holder.imgProfileBoard)
+        
+//        이미지 클릭 시 사용자 글 보여주기
+
+//        holder.imgProfileBoard.setOnClickListener {
+//            val intent = Intent(context, Fragment_profile::class.java)
+//            intent.putExtra("boardKey", keyData[position])
+//            context.startActivity(intent)
+//        }
     }
 
     override fun getItemCount(): Int {

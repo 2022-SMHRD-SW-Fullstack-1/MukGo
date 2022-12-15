@@ -30,9 +30,12 @@ class FBDatabase {
             return database.getReference("chat").child(key)
         }
 
-        fun getUserImg() {}
         fun getBookmarkRef(): DatabaseReference {
             return database.getReference("bookmarkList")
+        }
+
+        fun getLikeRef(): DatabaseReference {
+            return database.getReference("like")
         }
 
 

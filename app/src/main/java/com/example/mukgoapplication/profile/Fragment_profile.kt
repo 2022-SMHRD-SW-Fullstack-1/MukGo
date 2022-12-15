@@ -1,5 +1,6 @@
-package com.example.mukgoapplication.bookmark
+package com.example.mukgoapplication.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,50 +14,64 @@ import com.example.mukgoapplication.home.HomeAdapter
 import com.example.mukgoapplication.utils.FBAuth
 import com.example.mukgoapplication.utils.FBDatabase
 import com.example.mukgoapplication.write.BoardVO
-import com.example.mukgoapplication.write.CommentAdapter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class Fragment_bookmark : Fragment() {
+class Fragment_profile : Fragment() {
 
-    var bookBoardList = ArrayList<BoardVO>()
     var bookmarkList = ArrayList<String>()
+    var homeBoardList = ArrayList<BoardVO>()
     lateinit var adapter: HomeAdapter
     var keyData = ArrayList<String>()
-    var uid = FBAuth.getUid()
-    var booklikeList = ArrayList<String>()
+    var homelikeList = ArrayList<String>()
+
+    lateinit var boardKey: String
+
+
+    lateinit var bookmarkRef: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_bookmark, container, false)
-        val rvBookmark = view.findViewById<RecyclerView>(R.id.rvBookmark)
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        getBookBookData()
-        getBookBoardData()
-        getBookLikeData()
+        val sp = activity?.getSharedPreferences("like", Context.MODE_PRIVATE)
+        boardKey = sp?.getString("boardKey", "null") as String
 
-        adapter = HomeAdapter(requireContext(), bookBoardList, keyData, bookmarkList, booklikeList)
+        val database = Firebase.database
+        val rvHome = view.findViewById<RecyclerView>(R.id.rvProfileBoard)
+        bookmarkRef = database.getReference("bookList")
+        Log.d("boardKeyArguments", boardKey)
+        getHomeBoardData()
+        getBookMarkData()
+        getHomeLikeData()
 
-        rvBookmark.adapter = adapter
-        rvBookmark.layoutManager = LinearLayoutManager(requireContext())
+        Log.d("boardKey3", boardKey)
+
+
+        adapter = HomeAdapter(requireContext(), homeBoardList, keyData, bookmarkList, homelikeList)
+
+        rvHome.adapter = adapter
+        rvHome.layoutManager = LinearLayoutManager(requireContext())
 
         return view
     }
 
-    fun getBookLikeData() {
+    fun getHomeLikeData() {
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                booklikeList.clear()
+                Log.d("boardKey2", boardKey)
+                homelikeList.clear()
                 for (model in snapshot.children) {
                     val item = model.getValue() as String
                     if (item != null) {
-                        booklikeList.add(model.key.toString())
+                        homelikeList.add(model.key.toString())
                     }
                 }
                 adapter.notifyDataSetChanged()
@@ -67,24 +82,22 @@ class Fragment_bookmark : Fragment() {
             }
 
         }
-        FBDatabase.getLikeRef().child(uid).addValueEventListener(postListener)
+        FBDatabase.getLikeRef().child(boardKey).addValueEventListener(postListener)
     }
 
-    fun getBookBoardData() {
-        val posterListener = object : ValueEventListener {
+    fun getHomeBoardData() {
+        val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                bookBoardList.clear()
+                homeBoardList.clear()
                 for (model in snapshot.children) {
                     val item = model.getValue(BoardVO::class.java)
-                    // bookmarkList에 값이 채워져있어야함
-                    if (item != null && bookmarkList.contains(model.key.toString())) {
-                        bookBoardList.add(item)
-//                      data 내가 북마크 찍은 게시물만 담긴다.
-                        keyData.add(model.key.toString())
+                    if (item != null) {
+                        homeBoardList.add(item)
                     }
-
+                    keyData.add(model.key.toString())
                 }
-//                adapter 새로 고침하기
+                homeBoardList.reverse()
+                keyData.reverse()
                 adapter.notifyDataSetChanged()
             }
 
@@ -93,18 +106,20 @@ class Fragment_bookmark : Fragment() {
             }
 
         }
-        FBDatabase.getAllBoardRef().addValueEventListener(posterListener)
+        FBDatabase.getAllBoardRef().addValueEventListener(postListener)
     }
 
-    fun getBookBookData() {
+    fun getBookMarkData() {
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 bookmarkList.clear()
                 for (model in snapshot.children) {
-                    bookmarkList.add(model.key.toString())
+                    val item = model.getValue() as String
+                    if (item != null) {
+                        bookmarkList.add(model.key.toString())
+                    }
                 }
                 adapter.notifyDataSetChanged()
-                getBookBoardData()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -112,8 +127,7 @@ class Fragment_bookmark : Fragment() {
             }
 
         }
-        FBDatabase.getBookmarkRef().child(uid).addValueEventListener(postListener)
+        FBDatabase.getBookmarkRef().child(FBAuth.getUid()).addValueEventListener(postListener)
     }
-
 
 }

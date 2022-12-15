@@ -22,7 +22,7 @@ class FBAuth {
             val currentTime = Calendar.getInstance().time
             // 시간을 나타낼 형식, 어느위치의 시간을 가져올건지 설정
             // "yyyy.MM.dd HH:mm:sss"
-            val time = SimpleDateFormat("yyyy.MM.dd HH:mm:sss", Locale.KOREAN).format(currentTime)
+            val time = SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.KOREAN).format(currentTime)
             return time
         }
 
