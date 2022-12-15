@@ -38,7 +38,7 @@ class ChatActivity : AppCompatActivity() {
 
         adapter = ChatAdapter(this, chatList)
         binding.rvChat.adapter = adapter
-        binding.rvChat.layoutManager = LinearLayoutManager(this)
+        binding.rvChat.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
 
         binding.btnChatSend.setOnClickListener {
             val chat = ChatVO(binding.etChatMsg.text.toString(), FBAuth.getUid(), FBAuth.getTime())
@@ -63,6 +63,7 @@ class ChatActivity : AppCompatActivity() {
                     Log.d("comment", item.toString())
 //                    keyData.add(model.key.toString())
                 }
+                chatList.reverse()
                 adapter.notifyDataSetChanged()
             }
 
