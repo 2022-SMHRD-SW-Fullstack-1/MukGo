@@ -5,24 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgCRT"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:src="@drawable/img_user"
+        app:civ_border_color="#00FFFFFF"
+        app:civ_border_width="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvCRTNick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="6dp"
         android:text="지수"
         android:textSize="16sp"
@@ -43,9 +44,10 @@
         android:id="@+id/tvCRTLastMsgTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="280dp"
+        android:layout_marginStart="230dp"
         android:text="오후 12:47"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/imgCRT"
+        app:layout_constraintStart_toEndOf="@+id/tvCRTNick"
         app:layout_constraintTop_toTopOf="@+id/imgCRT" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
