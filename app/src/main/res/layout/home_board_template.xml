@@ -166,7 +166,7 @@
         android:backgroundTint="#FFFFFF"
         android:insetBottom="0dp"
         app:layout_constraintBottom_toTopOf="@+id/imgHomeContent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgDialog"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
