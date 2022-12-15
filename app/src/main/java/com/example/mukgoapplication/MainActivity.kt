@@ -10,6 +10,7 @@ import com.example.mukgoapplication.chat.ChatRoomFragment
 import com.example.mukgoapplication.databinding.ActivityMainBinding
 import com.example.mukgoapplication.home.Fragment1_home
 import com.example.mukgoapplication.map.AutocompleteAddressActivity
+import com.example.mukgoapplication.map.MapActivity
 import com.example.mukgoapplication.profile.ProfileActivity
 import com.example.mukgoapplication.setting.SettingActivity
 import com.example.mukgoapplication.write.WriteActivity
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                     ).commit()
                 }
                 R.id.tap2 -> {
-                    val intent = Intent(this, AutocompleteAddressActivity::class.java)
+                    val intent = Intent(this, MapActivity::class.java)
                     startActivity(intent)
                 }
                 R.id.tap3 -> {
