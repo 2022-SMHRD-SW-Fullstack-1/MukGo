@@ -31,6 +31,8 @@ class FBAuth {
         /**시간을 오후 9:13같은 형식으로 바꿔준다*/
         fun myTime(time: String): String{
             var timeResult = ""
+            if(time=="")
+                return ""
             if (time.substring(11,13).toInt()>12)
                 timeResult += "오후 " + (time.substring(11,13).toInt() - 12) + time.substring(13,16)
             else if (time.substring(11,13).toInt()==12)
