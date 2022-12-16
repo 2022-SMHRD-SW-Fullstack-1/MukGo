@@ -1,6 +1,8 @@
 package com.example.mukgoapplication.home
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +16,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.disklrucache.DiskLruCache.Value
 import com.example.mukgoapplication.R
 import com.example.mukgoapplication.auth.MemberVO
 import com.example.mukgoapplication.profile.ProfileActivity
@@ -27,7 +31,10 @@ import com.example.mukgoapplication.write.UpdateActivity
 import com.example.mukgoapplication.write.WriteActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -46,6 +53,9 @@ class HomeAdapter(
     val uid = FBAuth.getUid()
     val database = Firebase.database
     val auth: FirebaseAuth = Firebase.auth
+    /**count*/
+    val likesList = ArrayList<String>()
+    var likeNum = 0
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgHomeContent: ImageView
@@ -59,6 +69,8 @@ class HomeAdapter(
         val tvHomeTime: TextView
         val btnHomeProfileMove: Button
         val imgDialog: ImageView
+        val imgHomeShare: ImageView
+//        val animHeart: LottieAnimationView
 
         init {
             imgHomeProfile = itemView.findViewById(R.id.imgHomeProfile)
@@ -71,6 +83,8 @@ class HomeAdapter(
             tvHomeContent = itemView.findViewById(R.id.tvHomeContent)
             tvHomeTime = itemView.findViewById(R.id.tvHomeTime)
             btnHomeProfileMove = itemView.findViewById(R.id.btnHomeProfileMove)
+            imgHomeShare = itemView.findViewById<ImageView>(R.id.imgHomeShare)
+//            animHeart = itemView.findViewById(R.id.animHeart)
 
             imgDialog = itemView.findViewById(R.id.imgDialog)
 
@@ -97,7 +111,7 @@ class HomeAdapter(
         holder.tvHomeNick.text = boardHomeList[position].nick
         holder.tvHomeContent.text = boardHomeList[position].content
         holder.tvHomeTime.text = boardHomeList[position].time
-        holder.tvHomeLikeNum.text = boardHomeList[position].like
+        holder.tvHomeLikeNum.setText(likeNum.toString())
 
         getHomeBoardImage(keyData[position], holder.imgHomeContent)
         getHomeBoardImage(boardHomeList[position].uid, holder.imgHomeProfile)
@@ -111,6 +125,20 @@ class HomeAdapter(
             intent.putExtra("time", boardHomeList[position].time)
 
             context.startActivity(intent)
+        }
+
+        holder.imgHomeShare.setOnClickListener {
+            try {
+                var url = keyData[position]
+                val sendText = "https://mukgo-3f3b0-default-rtdb.firebaseio.com/$url"
+                val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.putExtra(Intent.EXTRA_TEXT, sendText)
+                sendIntent.type = "text/plain"
+                context.startActivity(Intent.createChooser(sendIntent, "Share"))
+            } catch (ignored: ActivityNotFoundException) {
+                Log.d("test", "ignored : $ignored")
+            }
         }
 
         holder.btnHomeProfileMove.setOnClickListener {
@@ -151,23 +179,13 @@ class HomeAdapter(
 
         holder.imgHomeLike.setOnClickListener {
             val likeRef = database.getReference("like")
-            val fragment1 = Fragment1_home()
-            val bundle = Bundle()
-            bundle.putString("boardKey", keyData[position])
-
-            fragment1.arguments = bundle
-
             if (likeList.contains(keyData[position])) {
-//                북마크 취소 database에 해당 bookData 삭제
                 likeRef.child(uid).child(keyData[position]).removeValue()
-                holder.imgHomeLike.setImageResource(R.drawable.heartblank)
-                holder.tvHomeLikeNum.text = holder.tvHomeLikeNum.text
-
             } else {
                 likeRef.child(uid).child(keyData[position]).setValue("like")
-                holder.imgHomeLike.setImageResource(R.drawable.heartfull)
-//                북마크 추가 database에 해당 bookData 추가
+                getLikeData()
             }
+
         }
 
 //        좋아요 표시
@@ -195,14 +213,11 @@ class HomeAdapter(
 //                북마크 취소 database에 해당 bookData 삭제
                 bookmarkRef.child(uid).child(keyData[position]).removeValue()
                 holder.imgHomeBookmark.setImageResource(R.drawable.bookmarkblank)
-                Log.d("data1", "취소 success")
 
             } else {
                 bookmarkRef.child(auth.currentUser!!.uid).child(keyData[position]).setValue("good")
                 holder.imgHomeBookmark.setImageResource(R.drawable.bookmarkfull)
 //                북마크 추가 database에 해당 bookData 추가
-                Log.d("data1List", bookmarkList.toString())
-                Log.d("data1", keyData[position].toString())
             }
             Log.d("data1List", bookmarkList.toString())
         }
@@ -212,12 +227,6 @@ class HomeAdapter(
 
     override fun getItemCount(): Int {
         return boardHomeList.size
-    }
-
-    fun getHomeLikeNum(key: String, et: EditText) {
-        FBDatabase.getLikeRef().get().addOnSuccessListener {
-            val item = it.getValue() as String
-        }
     }
 
     fun getHomeBoardImage(key: String, view: ImageView) {
@@ -244,7 +253,21 @@ class HomeAdapter(
         data.removeValue()
     }
 
-    fun getBoardData(uid: String) {
+    //    좋아요 개수
+    fun getLikeData() {
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                likesList.add(FBDatabase.getLikeRef().child(uid).key.toString())
+                Log.d("likeaa", likeList.toString())
+                Log.d("likeab", likeList.size.toString())
 
+                likeNum = likesList.size
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        }
+        FBDatabase.getLikeRef().addValueEventListener(postListener)
     }
 }
