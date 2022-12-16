@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgHomeProfile"
@@ -36,10 +36,10 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.543"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline5"
-        app:layout_constraintVertical_bias="0.374"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/common_google_signin_btn_icon_light_normal_background" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -54,14 +54,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7192716" />
+        app:layout_constraintGuide_begin="474dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_begin="527dp" />
 
     <ImageView
         android:id="@+id/imgHomeLike"
@@ -87,21 +87,21 @@
         android:id="@+id/imgHomeBookmark"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imgHomeComment"
-        app:layout_constraintStart_toEndOf="@+id/imgHomeComment"
-        app:layout_constraintTop_toTopOf="@+id/imgHomeComment"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline6"
         app:srcCompat="@drawable/bookmarkblank" />
 
     <ImageView
         android:id="@+id/imgHomeShare"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/guideline7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline6"
+        app:layout_constraintBottom_toBottomOf="@+id/imgHomeComment"
+        app:layout_constraintStart_toEndOf="@+id/imgHomeComment"
+        app:layout_constraintTop_toTopOf="@+id/imgHomeComment"
         app:srcCompat="@drawable/share" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -109,7 +109,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_begin="560dp" />
 
     <TextView
         android:id="@+id/textView3"
@@ -137,18 +137,16 @@
     <TextView
         android:id="@+id/tvHomeContent"
         android:layout_width="350dp"
-        android:layout_height="85dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="48dp"
         android:text="TextView"
         android:textColor="#000000"
         app:autoSizeTextType="none"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline8"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
     <TextView
         android:id="@+id/tvHomeTime"
@@ -183,5 +181,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/img_dot" />
+
+    <!--    <RelativeLayout-->
+    <!--        android:id="@+id/relativeLayout3"-->
+    <!--        android:layout_width="200dp"-->
+    <!--        android:layout_height="200dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/imgHomeContent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/imgHomeContent">-->
+
+    <!--        <com.airbnb.lottie.LottieAnimationView-->
+    <!--            android:id="@+id/animHeart"-->
+    <!--            android:layout_width="100dp"-->
+    <!--            android:layout_height="100dp"-->
+    <!--            android:layout_alignParentStart="true"-->
+    <!--            android:layout_alignParentTop="true"-->
+    <!--            android:layout_alignParentEnd="true"-->
+    <!--            android:layout_alignParentBottom="true"-->
+    <!--            android:visibility="invisible"-->
+    <!--            app:lottie_autoPlay="true"-->
+    <!--            app:lottie_loop="false"-->
+    <!--            app:lottie_rawRes="@raw/heart3" />-->
+    <!--    </RelativeLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
