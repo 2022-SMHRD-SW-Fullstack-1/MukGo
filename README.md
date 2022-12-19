@@ -22,7 +22,7 @@
   - API 활용 : Google Map API 호라용 위치 불러오기
   - 채팅 : 실시간 채팅
   
-# 시스템 흐름도
+#  흐름도
 ![image](https://user-images.githubusercontent.com/91239439/208326540-f2be42b8-b517-4c78-966c-ef0f8822914a.png)
 # 시스템 아키텍처
 
