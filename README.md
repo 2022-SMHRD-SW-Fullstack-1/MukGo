@@ -22,10 +22,8 @@
   - API 활용 : Google Map API 호라용 위치 불러오기
   - 채팅 : 실시간 채팅
   
-#  흐름도
+# 서비스흐름도
 ![image](https://user-images.githubusercontent.com/91239439/208326540-f2be42b8-b517-4c78-966c-ef0f8822914a.png)
-# 시스템 아키텍처
-
   
 # 🎥 시연 영상
 https://user-images.githubusercontent.com/112370791/208057621-fe75f58d-629c-443d-b297-9a96a2710313.mp4
